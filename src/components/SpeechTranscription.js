@@ -24,13 +24,15 @@ export default function SpeechTranscription() {
       </p>
       <div onClick={() => setTextToCopy(transcript)}>{transcript}</div>
       <div>
-        <button onClick={setCopied}>
+        <button onClick={setCopied} className="bg-green-300">
           Was it copied? {isCopied ? "Yes" : "No"}
         </button>
-        <button onClick={startListening}>Start listening</button>
+        <button onClick={startListening} className="bg-purple-300">
+          Start listening
+        </button>
         <button
           onClick={SpeechRecognition.stopListening}
-          className="btn btn-blue"
+          className="bg-blue-300"
         >
           Stop listening
         </button>
