@@ -3,10 +3,10 @@ import SpeechRecognition, {
 } from "react-speech-recognition";
 import { useState } from "react";
 import useClipboard from "react-use-clipboard";
+import { Microphone, Send, PlayerPause } from "tabler-icons-react";
 
 export default function SpeechTranscription() {
   const [textToCopy, setTextToCopy] = useState();
-  const [isCopied, setCopied] = useClipboard(textToCopy);
   const [response, setResponse] = useState(null);
 
   const startListening = () =>
@@ -29,6 +29,7 @@ export default function SpeechTranscription() {
   //   setResponse(result.choices[0].text);
   // };
 
+  //const API_KEY = ;
   // const API_KEY = process.env.REACT_APP_OPENAI_API_KEY;
 
   const APIBODY = {
@@ -69,20 +70,17 @@ export default function SpeechTranscription() {
       <p>Press start listening and speak to record</p>
       <div onClick={() => setTextToCopy(transcript)}>{transcript}</div>
       <div>
-        <button onClick={setCopied} className="bg-green-300">
-          {isCopied ? "It is copied Yes" : "It is copied? No"}
-        </button>
         <button onClick={startListening} className="bg-purple-300">
-          Start listening
+          <Microphone size={48} strokeWidth={2} color={"black"} />
         </button>
         <button
           onClick={SpeechRecognition.stopListening}
           className="bg-blue-300"
         >
-          Stop listening
+          <PlayerPause size={48} strokeWidth={2} color={"black"} />
         </button>
         <button onClick={handleTranscript} className="bg-red-800">
-          Send the transcript
+          <Send size={48} strokeWidth={2} color={"black"} />
         </button>
         <p>{response}</p>
       </div>
