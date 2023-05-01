@@ -2,7 +2,6 @@ import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
 import { useState } from "react";
-import useClipboard from "react-use-clipboard";
 import { Microphone, Send, PlayerPause } from "tabler-icons-react";
 
 export default function SpeechTranscription() {
@@ -29,14 +28,16 @@ export default function SpeechTranscription() {
   //   setResponse(result.choices[0].text);
   // };
 
-  //const API_KEY = ;
-  // const API_KEY = process.env.REACT_APP_OPENAI_API_KEY;
+  // const API_KEY = "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";
+
+  // const API_KEY = process.env.OPENAI_API_KEY;
+  // console.log(API_KEY);
 
   const APIBODY = {
     model: "text-davinci-003",
     // prompt: prompt + message, we can now add a prompt
     prompt: transcript,
-    max_tokens: 60,
+    max_tokens: 200,
     top_p: 1.0,
     frequency_penalty: 0.0,
     presence_penalty: 0.0,
@@ -47,7 +48,7 @@ export default function SpeechTranscription() {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        authorization: `Bearer ${API_KEY}`,
+        authorization: `Bearer ${process.env.NEXT_PUBLIC_OPENAI_API_KEY}`,
       },
       body: JSON.stringify(APIBODY),
     })
