@@ -15,7 +15,7 @@ export default function SpeechTranscription() {
     });
 
   const { transcript } = useSpeechRecognition();
-
+  // different api approach
   // const handleTranscript = async () => {
   //   openai.api_key = api_key;
   //   const result = await openai.Completion.create({
@@ -28,14 +28,8 @@ export default function SpeechTranscription() {
   //   setResponse(result.choices[0].text);
   // };
 
-  // const API_KEY = "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";
-
-  // const API_KEY = process.env.OPENAI_API_KEY;
-  // console.log(API_KEY);
-
   const APIBODY = {
     model: "text-davinci-003",
-    // prompt: prompt + message, we can now add a prompt
     prompt:
       "You are an excellent bot, you provide excellent advices to students. Can you give suggestions on the following prompt:" +
       transcript,
@@ -67,27 +61,48 @@ export default function SpeechTranscription() {
   }
 
   return (
-    <div>
-      <h2 className="text-red-800">Speech to text Converter</h2>
-      <br />
-      <p>Press start listening and speak to record</p>
-      <div onClick={() => setTextToCopy(transcript)}>{transcript}</div>
-      <div>
-        <button onClick={startListening} className="bg-purple-300">
-          <Microphone size={48} strokeWidth={2} color={"black"} />
-        </button>
-        <button
-          onClick={SpeechRecognition.stopListening}
-          className="bg-blue-300"
-        >
-          <PlayerPause size={48} strokeWidth={2} color={"black"} />
-        </button>
-        <button onClick={handleTranscript} className="bg-red-800">
-          <Send size={48} strokeWidth={2} color={"black"} />
-        </button>
+    <div className="flex font-sans">
+      <div className="flex-none w-48 relative">
+        <h1>Reflect:</h1>
+        <h2 className="text-red-800 flex flex-col items-center justify-between">
+          As you explore careers, it’s important to imagine what you think life
+          would be like in this potential career. Answer the following in 1 - 2
+          minutes: Imagine yourself as a _______. What aspects of this life seem
+          appealing to you? What aspects of this life seem unappealing to you?
+        </h2>
+        <p>Click to start and stop the recording.</p>
+        <div onClick={() => setTextToCopy(transcript)}>{transcript}</div>
+        <div className="list-none">
+          <li>
+            <button
+              onClick={startListening}
+              className="bg-purple-300 rounded-full py-4 px-4"
+            >
+              <Microphone size={48} strokeWidth={2} color={"black"} />
+            </button>
+          </li>
+          <li>
+            <button
+              onClick={SpeechRecognition.stopListening}
+              className="bg-blue-300 rounded-full py-4 px-4"
+            >
+              <PlayerPause size={48} strokeWidth={2} color={"black"} />
+            </button>
+          </li>
+          <li>
+            <button
+              onClick={handleTranscript}
+              className="bg-red-800 rounded-full py-4 px-4"
+            >
+              <Send size={48} strokeWidth={2} color={"black"} />
+            </button>
+          </li>
+        </div>
+      </div>
+      <div className="flex flex-wrap border-2">
+        <h1 className="text-2xl">Insights from AI:</h1>
         <p>{response}</p>
       </div>
-      {console.log(transcript)}
     </div>
   );
 }
