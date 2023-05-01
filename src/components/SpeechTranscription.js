@@ -36,7 +36,9 @@ export default function SpeechTranscription() {
   const APIBODY = {
     model: "text-davinci-003",
     // prompt: prompt + message, we can now add a prompt
-    prompt: transcript,
+    prompt:
+      "You are an excellent bot, you provide excellent advices to students. Can you give suggestions on the following prompt:" +
+      transcript,
     max_tokens: 200,
     top_p: 1.0,
     frequency_penalty: 0.0,
