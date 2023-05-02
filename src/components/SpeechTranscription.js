@@ -1,13 +1,15 @@
 import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Microphone, Send, PlayerPause } from "tabler-icons-react";
+import { useRouter } from "next/router";
 
 export default function SpeechTranscription() {
   const [textToCopy, setTextToCopy] = useState();
   const [response, setResponse] = useState(null);
-  const CAREER_PATH = "Data Scientist";
+  const router = useRouter();
+  const CAREER_PATH = router.query.career;
 
   const startListening = () =>
     SpeechRecognition.startListening({
@@ -53,6 +55,7 @@ export default function SpeechTranscription() {
   };
 
   async function handleTranscript() {
+    console.log("handled transcript", CAREER_PATH);
     await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
       headers: {
@@ -79,8 +82,9 @@ export default function SpeechTranscription() {
         <h2 className="text-red-800 flex flex-col items-center justify-between">
           As you explore careers, it’s important to imagine what you think life
           would be like in this potential career. Answer the following in 1 - 2
-          minutes: Imagine yourself as a _______. What aspects of this life seem
-          appealing to you? What aspects of this life seem unappealing to you?
+          minutes: Imagine yourself as a {CAREER_PATH}. What aspects of this
+          life seem appealing to you? What aspects of this life seem unappealing
+          to you?
         </h2>
         <p>Click to start and stop the recording.</p>
         <div onClick={() => setTextToCopy(transcript)}>{transcript}</div>
