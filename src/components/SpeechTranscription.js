@@ -8,14 +8,22 @@ import { useRouter } from "next/router";
 export default function SpeechTranscription() {
   const [textToCopy, setTextToCopy] = useState();
   const [response, setResponse] = useState(null);
+  const [speechState, setSpeechState] = useState("record");
   const router = useRouter();
   const CAREER_PATH = router.query.career;
 
-  const startListening = () =>
-    SpeechRecognition.startListening({
-      continuous: true,
-      language: "en-US",
-    });
+  const startListening = () => {
+    // SpeechRecognition.startListening({
+    //   continuous: true,
+    //   language: "en-US",
+    // });
+    setSpeechState("pause");
+  };
+
+  const stopListening = () => {
+    // SpeechRecognition.stopListening();
+    setSpeechState("record");
+  };
 
   const { transcript } = useSpeechRecognition();
 
@@ -55,7 +63,7 @@ export default function SpeechTranscription() {
   };
 
   async function handleTranscript() {
-    console.log("handled transcript", CAREER_PATH);
+    setSpeechState("record");
     await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
       headers: {
@@ -76,47 +84,96 @@ export default function SpeechTranscription() {
   }
 
   return (
-    <div className="grid grid-rows-1 grid-cols-2 gap-4 m-5 font-sans">
+    <div className="grid grid-rows-1 grid-cols-2 gap-16 mt-3 mx-24">
       <div className="col-span-1 p-5 relative flex flex-col items-center">
-        <h1>Reflect:</h1>
-        <h2 className="text-red-800 flex flex-col items-center justify-between">
-          As you explore careers, it’s important to imagine what you think life
-          would be like in this potential career. Answer the following in 1 - 2
-          minutes: Imagine yourself as a {CAREER_PATH}. What aspects of this
-          life seem appealing to you? What aspects of this life seem unappealing
-          to you?
+        <h1 className="text-5xl font-bold text-black">Reflect:</h1>
+        <h2 className="flex flex-col items-center justify-between mt-4 px-4 text-xl">
+          <p className="text-center">
+            As you explore careers, it’s important to imagine what you think
+            life would be like in this potential career.
+          </p>
+          <br />
+          <p className="text-center">
+            <b>Answer the following in 1 - 2 minutes:</b> Imagine yourself as a{" "}
+            {CAREER_PATH}. What aspects of this life seem appealing to you? What
+            aspects of this life seem unappealing to you?
+          </p>
         </h2>
-        <p>Click to start and stop the recording.</p>
-        <div onClick={() => setTextToCopy(transcript)}>{transcript}</div>
-        <div className="list-none">
-          <li>
+        <div className="bg-red-500" onClick={() => setTextToCopy(transcript)}>
+          {transcript}
+        </div>
+        <div className="border rounded-lg border-gray-500 m-4 p-8 w-full list-none flex flex-col justify-center items-center min-h-[378px]">
+          {speechState == "record" && (
+            <li>
+              <button
+                onClick={startListening}
+                className="bg-[#F3F3F3] rounded-full py-8 px-8"
+              >
+                <Microphone size={112} strokeWidth={2} color={"#A3A3A3"} />
+              </button>
+            </li>
+          )}
+          {speechState == "pause" && (
+            <li>
+              <button
+                onClick={stopListening}
+                className="bg-[#F3F3F3] rounded-full py-8 px-8"
+              >
+                <PlayerPause size={112} strokeWidth={2} color={"#A3A3A3"} />
+              </button>
+            </li>
+          )}
+          {(speechState == "record" || speechState == "pause") && (
+            <p className="pt-6 text-xl font-normal">
+              Click to start and stop the recording.
+            </p>
+          )}
+          {speechState == "transcript" && (
+            <p>
+              I think I'm really drawn to the idea of the freedom and
+              flexibility of being able to really build out your schedule.
+              Having that work-life balance, setting those times that work best
+              for you, and knowing when your best travel times and vacation
+              times will be. But I also just like the idea of the service that
+              you do as a professor. I think lots of times people will just
+              think they're teaching or leading classes. And that's really fun
+              for me. Cuz I'm a huge educator. Someone who really values
+              education and the power of education, but also the different
+              things that you can create an impact in and how your credibility
+              allow you into those spaces and drive certain information in
+              certain areas. So I just really like the idea of being able to
+              give back and really be able to contribute to certain communities
+              with my knowledge and expertise.
+            </p>
+          )}
+        </div>
+        <div className="flex mt-2 gap-5">
+          {(speechState == "record" || speechState == "pause") && (
             <button
-              onClick={startListening}
-              className="bg-purple-300 rounded-full py-4 px-4"
+              onClick={() => setSpeechState("transcript")}
+              className="bg-[#BABABA] min-w-[215px] font-bold text-white text-lg py-4 px-5 rounded-xl"
             >
-              <Microphone size={48} strokeWidth={2} color={"black"} />
+              Or Select Existing
             </button>
-          </li>
-          <li>
+          )}
+          {speechState == "transcript" && (
             <button
-              onClick={SpeechRecognition.stopListening}
-              className="bg-blue-300 rounded-full py-4 px-4"
+              onClick={() => setSpeechState("record")}
+              className="bg-[#BABABA] min-w-[215px] font-bold text-white text-lg py-4 px-5 rounded-xl"
             >
-              <PlayerPause size={48} strokeWidth={2} color={"black"} />
+              Or Record Your Own
             </button>
-          </li>
-          <li>
-            <button
-              onClick={handleTranscript}
-              className="bg-red-800 rounded-full py-4 px-4"
-            >
-              <Send size={48} strokeWidth={2} color={"black"} />
-            </button>
-          </li>
+          )}
+          <button
+            onClick={handleTranscript}
+            className="bg-black font-bold text-white text-lg py-4 px-5 rounded-xl"
+          >
+            Submit
+          </button>
         </div>
       </div>
-      <div className="col-span-1 flex flex-wrap border-2 p-5">
-        <h1 className="text-2xl">Insights from AI:</h1>
+      <div className="col-span-1 flex flex-wrap justify-center p-5 mt-8 border rounded-2xl border-[#F92949] font-bold">
+        <h1 className="text-5xl text-black">Insights from AI:</h1>
         <p>{response}</p>
       </div>
     </div>
