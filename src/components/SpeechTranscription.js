@@ -73,8 +73,8 @@ export default function SpeechTranscription() {
   }
 
   return (
-    <div className="flex font-sans">
-      <div className="flex-none w-48 relative">
+    <div className="grid grid-rows-1 grid-cols-2 gap-4 m-5 font-sans">
+      <div className="col-span-1 p-5 relative flex flex-col items-center">
         <h1>Reflect:</h1>
         <h2 className="text-red-800 flex flex-col items-center justify-between">
           As you explore careers, it’s important to imagine what you think life
@@ -111,7 +111,7 @@ export default function SpeechTranscription() {
           </li>
         </div>
       </div>
-      <div className="flex flex-wrap border-2">
+      <div className="col-span-1 flex flex-wrap border-2 p-5">
         <h1 className="text-2xl">Insights from AI:</h1>
         <p>{response}</p>
       </div>
