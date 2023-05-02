@@ -13,15 +13,15 @@ export default function SpeechTranscription() {
   const CAREER_PATH = router.query.career;
 
   const startListening = () => {
-    // SpeechRecognition.startListening({
-    //   continuous: true,
-    //   language: "en-US",
-    // });
+    SpeechRecognition.startListening({
+      continuous: true,
+      language: "en-US",
+    });
     setSpeechState("pause");
   };
 
   const stopListening = () => {
-    // SpeechRecognition.stopListening();
+    SpeechRecognition.stopListening();
     setSpeechState("record");
   };
 
@@ -39,7 +39,8 @@ export default function SpeechTranscription() {
           CAREER_PATH +
           ". In up to 3 bullet points, identify what this student perceives as important values for themselves and this career path. Then in up to 3 bullet points, summarize back to the student what they have identified as challenges on their  path to becoming a " +
           CAREER_PATH +
-          ". Finally, provide one question that a student might want to ask their mentor about in the future.",
+          ". Finally, provide one question that a student might want to ask their mentor about in the future." +
+          " Give the response to each section in a list and surrounded by '. Within each response, each listed item should be in list format.",
       },
       {
         role: "user",
@@ -49,7 +50,7 @@ export default function SpeechTranscription() {
       {
         role: "system",
         content:
-          "Here are some aspects of your career path that you value: 1. Education is a powerful transformative tool. 2. Rewarding to actively help people. 3. Opportunity to work with people who have the potential to go somewhere else. Here are some challenges that you’ve imagined along your career path: You are excited about the prospect of pursuing a PhD and becoming a professor, as it combines your interests in research and teaching. 2. You anticipate that the first few years of the PhD program may be challenging as you adjust to the workload and find your bearings. 3. You believe that the benefits of this career path outweigh the challenges. Next time you talk to your mentor, consider asking them: What was your first year of the PhD. like? How did you get through it?",
+          "[['Education is a powerful transformative tool.', 'Rewarding to actively help people.', 'Opportunity to work with people who have the potential to go somewhere else.'], ['You are excited about the prospect of pursuing a PhD and becoming a professor, as it combines your interests in research and teaching.', 'You anticipate that the first few years of the PhD program may be challenging as you adjust to the workload and find your bearings.'], ['What was your first year of the PhD. like?', 'How did you get through it?']]",
       },
       {
         role: "user",
@@ -80,7 +81,10 @@ export default function SpeechTranscription() {
         return response.json();
       })
       .then((data) => {
-        setResponse(data.choices[0].message.content);
+        const resp = data.choices[0].message.content;
+        console.log("resp", resp);
+        setResponse(resp);
+        // setResponse(data.choices[0].message.content);
       })
       .catch((error) => {
         console.error(error);
