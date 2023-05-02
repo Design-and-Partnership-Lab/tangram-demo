@@ -4,24 +4,26 @@ import Footer from "../components/Footer";
 
 export default function Home() {
   return (
-    <div className="flex flex-col items-center justify-between w-full h-screen">
-      <header className="flex justify-start w-full items-center">
-        <NavBar />
-      </header>
-      <main className="flex justify-center w-full items-start">
-        <Hero />
-      </main>
-      <footer>
+    <>
+      <div className="flex flex-col items-center justify-between w-full h-screen">
+        <header className="flex justify-start w-full items-center">
+          <NavBar />
+        </header>
+        <main className="flex flex-grow justify-center w-full items-center mb-[132px]">
+          <Hero />
+        </main>
+      </div>
+      <div className="fixed bottom-2 right-0">
         <Footer />
-      </footer>
-    </div>
+      </div>
+    </>
   );
 }
 
 function Hero() {
   return (
     <div className="hero min-h-[80%]">
-      <div className="m-12 mt-20 hero-content flex-col lg:flex-row">
+      <div className="m-8 mt-12 hero-content flex-col lg:flex-row">
         <img
           src="/welcomephone.svg"
           alt="gates"
