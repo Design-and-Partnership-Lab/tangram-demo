@@ -11,6 +11,9 @@ export default function SpeechTranscription() {
   const [speechState, setSpeechState] = useState("record");
   const router = useRouter();
   const CAREER_PATH = router.query.career;
+  const [values, setValues] = useState("");
+  const [challenges, setChallenges] = useState("");
+  const [questions, setQuestions] = useState("");
 
   const startListening = () => {
     SpeechRecognition.startListening({
@@ -37,10 +40,10 @@ export default function SpeechTranscription() {
         content:
           "Please read the following excerpt from an interview with an undergraduate student who is interested in becoming a " +
           CAREER_PATH +
-          ". In up to 3 bullet points, identify what this student perceives as important values for themselves and this career path. Then in up to 3 bullet points, summarize back to the student what they have identified as challenges on their  path to becoming a " +
+          ". In up to 3 bullet points, identify what this student perceives as important values for themselves and this career path. Then in up to 3 bullet points, summarize back to the student what they have identified as challenges on their path to becoming a " +
           CAREER_PATH +
           ". Finally, provide one question that a student might want to ask their mentor about in the future." +
-          " Give the response to each section in a list and surrounded by '. Within each response, each listed item should be in list format.",
+          ' Give the response to each section as a list with three semi-colons separating each one. Within each response, each listed item should be a double quote string. There should be no other text descriptors and it should be possible to use each list directly in python as a list. For example, if the values are apples, oranges, and bananas; the challenges are pears, grapes; and the questions are strawberries, melons; then the following should be the output: ["apples", "oranges", "bananas"];;;["pears", "grapes"];;;["strawberries", "melons"]]',
       },
       {
         role: "user",
@@ -50,7 +53,7 @@ export default function SpeechTranscription() {
       {
         role: "system",
         content:
-          "[['Education is a powerful transformative tool.', 'Rewarding to actively help people.', 'Opportunity to work with people who have the potential to go somewhere else.'], ['You are excited about the prospect of pursuing a PhD and becoming a professor, as it combines your interests in research and teaching.', 'You anticipate that the first few years of the PhD program may be challenging as you adjust to the workload and find your bearings.'], ['What was your first year of the PhD. like?', 'How did you get through it?']]",
+          '["Education is a powerful transformative tool.", "Rewarding to actively help people.", "Opportunity to work with people who have the potential to go somewhere else."];;;["You are excited about the prospect of pursuing a PhD and becoming a professor, as it combines your interests in research and teaching.", "You anticipate that the first few years of the PhD program may be challenging as you adjust to the workload and find your bearings."];;;["What was your first year of the PhD. like?", "How did you get through it?"]',
       },
       {
         role: "user",
@@ -82,9 +85,10 @@ export default function SpeechTranscription() {
       })
       .then((data) => {
         const resp = data.choices[0].message.content;
-        console.log("resp", resp);
-        setResponse(resp);
-        // setResponse(data.choices[0].message.content);
+        const resp_arr = resp.split(";;;");
+        setValues(JSON.parse(resp_arr[0]));
+        setChallenges(JSON.parse(resp_arr[1]));
+        setQuestions(JSON.parse(resp_arr[2]));
       })
       .catch((error) => {
         console.error(error);
@@ -102,7 +106,7 @@ export default function SpeechTranscription() {
           </p>
           <br />
           <p className="text-center">
-            <b>Answer the following in 1 - 2 minutes:</b> Imagine yourself as a{" "}
+            <b>Answer the following in 1 - 2 minutes:</b> Imagine yourself as a
             {CAREER_PATH}. What aspects of this life seem appealing to you? What
             aspects of this life seem unappealing to you?
           </p>
@@ -166,9 +170,42 @@ export default function SpeechTranscription() {
           </button>
         </div>
       </div>
-      <div className="col-span-1 flex flex-wrap justify-center p-5 mt-8 border rounded-2xl border-[#F92949] font-bold">
-        <h1 className="text-5xl text-black">Insights from AI:</h1>
-        <p>{response}</p>
+      <div className="col-span-1 px-10 py-5 mt-8 border rounded-2xl border-[#F92949] h-[700px] overflow-y-auto">
+        <span className="flex flex-col place-self-start">
+          <h1 className="text-5xl text-black font-bold mt-3 text-center">
+            Insights from AI:
+          </h1>
+          {values != "" && (
+            <span className="text-lg">
+              <p className="mt-7 font-bold">
+                According to your audio survey, these are your values:
+              </p>
+              {values.map((it) => (
+                <li className="">{it}</li>
+              ))}
+              <p className="mt-5 font-bold">The following aspects surfaced:</p>
+              {challenges.map((it) => (
+                <li>{it}</li>
+              ))}
+              <p className="mt-5 font-bold">Have you ever considered: </p>
+              {questions.map((it) => (
+                <li>{it}</li>
+              ))}
+
+              <div className="rounded-2xl bg-[#F92949] text-white text-center p-6 mt-5 mb-3">
+                <p>
+                  Note: This is an example of the practical measure “Envision
+                  Yourself in the Work”.
+                </p>
+                <p>
+                  This information might be helpful for a mentor to know in
+                  order to better guide mentees who have limited exposure to
+                  various aspects of a career.
+                </p>
+              </div>
+            </span>
+          )}
+        </span>
       </div>
     </div>
   );
