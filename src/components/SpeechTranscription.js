@@ -15,24 +15,17 @@ export default function SpeechTranscription() {
     });
 
   const { transcript } = useSpeechRecognition();
-  // different api approach
-  // const handleTranscript = async () => {
-  //   openai.api_key = api_key;
-  //   const result = await openai.Completion.create({
-  //     model: "text-davinci-003",
-  //     prompt: transcript,
-  //     max_tokens: 100,
-  //     temperature: 0,
-  //   });
-
-  //   setResponse(result.choices[0].text);
-  // };
 
   const APIBODY = {
-    model: "text-davinci-003",
-    prompt:
-      "You are an excellent bot, you provide excellent advices to students. Can you give suggestions on the following prompt:" +
-      transcript,
+    model: "gpt-3.5-turbo",
+    messages: [
+      {
+        role: "system",
+        content:
+          "You are an excellent bot, you provide excellent advices to students. Can you give me suggestions?",
+      },
+      { role: "user", content: transcript },
+    ],
     max_tokens: 200,
     top_p: 1.0,
     frequency_penalty: 0.0,
@@ -40,7 +33,7 @@ export default function SpeechTranscription() {
   };
 
   async function handleTranscript() {
-    await fetch("https://api.openai.com/v1/completions", {
+    await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -52,8 +45,7 @@ export default function SpeechTranscription() {
         return response.json();
       })
       .then((data) => {
-        console.log(data);
-        setResponse(data.choices[0].text);
+        setResponse(data.choices[0].message.content);
       })
       .catch((error) => {
         console.error(error);
