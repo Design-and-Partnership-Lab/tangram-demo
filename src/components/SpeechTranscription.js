@@ -26,6 +26,8 @@ export default function SpeechTranscription() {
   };
 
   const { transcript } = useSpeechRecognition();
+  const existing_transcript =
+    "A lot of the aspects of a job in research actually appeal to me and especially within both, education and Technology. I like to think through things and stops and break things down. I also like to think through and consider problems, that might need to be solved and the steps you might need to take to get there and I want to make sure that I work in a job that requires me to learn from and work with others in the future because I think there’s something new to be learned every day and I think there’s just something cool about what thinking of new ideas and working in an expanding field.	I don’t know if I would describe it as unappealing because in the same way, it’s a reason that this job or this feels as appealing to me, but maybe the fact that technology changes all the time and so there will always be new things to consider and new technologies that might disrupt the field or a specific thing that I might be working on. But I think at the same time technology always be used for good if we try and because I like both education and technology I would just want to take it as an opportunity to think and learn about how long what I’m working on might be made better through that.";
 
   const APIBODY = {
     model: "gpt-3.5-turbo",
@@ -49,12 +51,15 @@ export default function SpeechTranscription() {
         content:
           "Here are some aspects of your career path that you value: 1. Education is a powerful transformative tool. 2. Rewarding to actively help people. 3. Opportunity to work with people who have the potential to go somewhere else. Here are some challenges that you’ve imagined along your career path: You are excited about the prospect of pursuing a PhD and becoming a professor, as it combines your interests in research and teaching. 2. You anticipate that the first few years of the PhD program may be challenging as you adjust to the workload and find your bearings. 3. You believe that the benefits of this career path outweigh the challenges. Next time you talk to your mentor, consider asking them: What was your first year of the PhD. like? How did you get through it?",
       },
-      // { role: "user", content: transcript },
       {
         role: "user",
-        content:
-          "A lot of the aspects of a job in research actually appeal to me and especially within both, education and Technology. I like to think through things and stops and break things down. I also like to think through and consider problems, that might need to be solved and the steps you might need to take to get there and I want to make sure that I work in a job that requires me to learn from and work with others in the future because I think there’s something new to be learned every day and I think there’s just something cool about what thinking of new ideas and working in an expanding field.	I don’t know if I would describe it as unappealing because in the same way, it’s a reason that this job or this feels as appealing to me, but maybe the fact that technology changes all the time and so there will always be new things to consider and new technologies that might disrupt the field or a specific thing that I might be working on. But I think at the same time technology always be used for good if we try and because I like both education and technology I would just want to take it as an opportunity to think and learn about how long what I’m working on might be made better through that.",
+        content: speechState == "transcript" ? existing_transcript : transcript,
       },
+      // {
+      //   role: "user",
+      //   content:
+      //     "A lot of the aspects of a job in research actually appeal to me and especially within both, education and Technology. I like to think through things and stops and break things down. I also like to think through and consider problems, that might need to be solved and the steps you might need to take to get there and I want to make sure that I work in a job that requires me to learn from and work with others in the future because I think there’s something new to be learned every day and I think there’s just something cool about what thinking of new ideas and working in an expanding field.	I don’t know if I would describe it as unappealing because in the same way, it’s a reason that this job or this feels as appealing to me, but maybe the fact that technology changes all the time and so there will always be new things to consider and new technologies that might disrupt the field or a specific thing that I might be working on. But I think at the same time technology always be used for good if we try and because I like both education and technology I would just want to take it as an opportunity to think and learn about how long what I’m working on might be made better through that.",
+      // },
     ],
     max_tokens: 200,
     top_p: 1.0,
@@ -63,7 +68,6 @@ export default function SpeechTranscription() {
   };
 
   async function handleTranscript() {
-    setSpeechState("record");
     await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
       headers: {
@@ -102,50 +106,36 @@ export default function SpeechTranscription() {
         <div className="bg-red-500" onClick={() => setTextToCopy(transcript)}>
           {transcript}
         </div>
-        <div className="border rounded-lg border-gray-500 m-4 p-8 w-full list-none flex flex-col justify-center items-center min-h-[378px]">
-          {speechState == "record" && (
-            <li>
-              <button
-                onClick={startListening}
-                className="bg-[#F3F3F3] rounded-full py-8 px-8"
-              >
-                <Microphone size={112} strokeWidth={2} color={"#A3A3A3"} />
-              </button>
-            </li>
-          )}
-          {speechState == "pause" && (
-            <li>
-              <button
-                onClick={stopListening}
-                className="bg-[#F3F3F3] rounded-full py-8 px-8"
-              >
-                <PlayerPause size={112} strokeWidth={2} color={"#A3A3A3"} />
-              </button>
-            </li>
-          )}
+        <div className="border rounded-lg border-gray-500 m-4 p-8 w-full list-none h-[378px] overflow-y-auto">
           {(speechState == "record" || speechState == "pause") && (
-            <p className="pt-6 text-xl font-normal">
-              Click to start and stop the recording.
-            </p>
+            <span className="flex flex-col justify-center items-center w-full h-full">
+              {speechState == "record" && (
+                <li>
+                  <button
+                    onClick={startListening}
+                    className="bg-[#F3F3F3] rounded-full py-8 px-8"
+                  >
+                    <Microphone size={112} strokeWidth={2} color={"#A3A3A3"} />
+                  </button>
+                </li>
+              )}
+              {speechState == "pause" && (
+                <li>
+                  <button
+                    onClick={stopListening}
+                    className="bg-[#F3F3F3] rounded-full py-8 px-8"
+                  >
+                    <PlayerPause size={112} strokeWidth={2} color={"#A3A3A3"} />
+                  </button>
+                </li>
+              )}
+
+              <p className="pt-6 text-xl font-normal">
+                Click to start and stop the recording.
+              </p>
+            </span>
           )}
-          {speechState == "transcript" && (
-            <p>
-              I think I'm really drawn to the idea of the freedom and
-              flexibility of being able to really build out your schedule.
-              Having that work-life balance, setting those times that work best
-              for you, and knowing when your best travel times and vacation
-              times will be. But I also just like the idea of the service that
-              you do as a professor. I think lots of times people will just
-              think they're teaching or leading classes. And that's really fun
-              for me. Cuz I'm a huge educator. Someone who really values
-              education and the power of education, but also the different
-              things that you can create an impact in and how your credibility
-              allow you into those spaces and drive certain information in
-              certain areas. So I just really like the idea of being able to
-              give back and really be able to contribute to certain communities
-              with my knowledge and expertise.
-            </p>
-          )}
+          {speechState == "transcript" && <p>{existing_transcript}</p>}
         </div>
         <div className="flex mt-2 gap-5">
           {(speechState == "record" || speechState == "pause") && (
