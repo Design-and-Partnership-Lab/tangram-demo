@@ -153,12 +153,17 @@ export default function SpeechTranscription() {
         </div>
         <div className="flex mt-2 gap-5">
           {(speechState == "record" || speechState == "pause") && (
-            <button
-              onClick={() => setSpeechState("transcript")}
-              className="bg-black min-w-[215px] font-bold text-white text-lg py-4 px-5 rounded-xl"
+            <div
+              className="tooltip tooltip-bottom"
+              data-tip="Click here to use an example for a data scientist"
             >
-              Or Select Existing
-            </button>
+              <button
+                onClick={() => setSpeechState("transcript")}
+                className="bg-black min-w-[215px] font-bold text-white text-lg py-4 px-5 rounded-xl"
+              >
+                Or Select Existing
+              </button>
+            </div>
           )}
           {speechState == "transcript" && (
             <button
