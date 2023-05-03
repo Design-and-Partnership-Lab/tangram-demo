@@ -158,7 +158,11 @@ export default function SpeechTranscription() {
               data-tip="Click here to use an example for a data scientist"
             >
               <button
-                onClick={() => setSpeechState("transcript")}
+                onClick={() => {
+                  setSpeechState("transcript");
+                  handleTranscript();
+                  setLoading(true);
+                }}
                 className="bg-black min-w-[215px] font-bold text-white text-lg py-4 px-5 rounded-xl"
               >
                 Or Select Existing
