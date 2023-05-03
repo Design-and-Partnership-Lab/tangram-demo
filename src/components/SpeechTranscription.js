@@ -2,9 +2,10 @@ import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
 import { useState, useEffect } from "react";
-import { Microphone, Send, PlayerPause } from "tabler-icons-react";
+import { Microphone, Send, PlayerPause, Disabled } from "tabler-icons-react";
 import { useRouter } from "next/router";
 import Smile from "./Smile";
+import Cisco from "./Cisco";
 
 export default function SpeechTranscription() {
   const [textToCopy, setTextToCopy] = useState();
@@ -91,6 +92,7 @@ export default function SpeechTranscription() {
         setValues(JSON.parse(resp_arr[0]));
         setChallenges(JSON.parse(resp_arr[1]));
         setQuestions(JSON.parse(resp_arr[2]));
+        setLoading(false);
       })
       .catch((error) => {
         console.error(error);
@@ -108,7 +110,7 @@ export default function SpeechTranscription() {
           </p>
           <br />
           <p className="text-center">
-            <b>Answer the following in 1 - 2 minutes:</b> Imagine yourself as a
+            <b>Answer the following in 1 - 2 minutes:</b> Imagine yourself as a{" "}
             {CAREER_PATH}. What aspects of this life seem appealing to you? What
             aspects of this life seem unappealing to you?
           </p>
@@ -165,7 +167,10 @@ export default function SpeechTranscription() {
             </button>
           )}
           <button
-            onClick={handleTranscript}
+            onClick={() => {
+              handleTranscript();
+              setLoading(true);
+            }}
             className="bg-black font-bold text-white text-lg py-4 px-5 rounded-xl"
           >
             Submit
@@ -177,35 +182,42 @@ export default function SpeechTranscription() {
           <h1 className="text-5xl text-black font-bold mt-3 text-center">
             Insights from AI:
           </h1>
-          {values != "" && (
-            <span className="text-lg">
-              <p className="mt-7 font-bold">
-                According to your audio survey, these are your values:
-              </p>
-              {values.map((it) => (
-                <li className="">{it}</li>
-              ))}
-              <p className="mt-5 font-bold">The following aspects surfaced:</p>
-              {challenges.map((it) => (
-                <li>{it}</li>
-              ))}
-              <p className="mt-5 font-bold">Have you ever considered: </p>
-              {questions.map((it) => (
-                <li>{it}</li>
-              ))}
-
-              <div className="rounded-2xl bg-[#F92949] text-white text-center p-6 mt-5 mb-3">
-                <p>
-                  Note: This is an example of the practical measure “Envision
-                  Yourself in the Work”.
+          {isLoading ? (
+            // <p>is still loading</p>
+            //<Smile /> //works, but not with the Smile thing
+            <Cisco />
+          ) : (
+            values != "" && (
+              <span className="text-lg">
+                <p className="mt-7 font-bold">
+                  According to your audio survey, these are your values:
                 </p>
-                <p>
-                  This information might be helpful for a mentor to know in
-                  order to better guide mentees who have limited exposure to
-                  various aspects of a career.
+                {values.map((it) => (
+                  <li className="">{it}</li>
+                ))}
+                <p className="mt-5 font-bold">
+                  The following aspects surfaced:
                 </p>
-              </div>
-            </span>
+                {challenges.map((it) => (
+                  <li>{it}</li>
+                ))}
+                <p className="mt-5 font-bold">Have you ever considered: </p>
+                {questions.map((it) => (
+                  <li>{it}</li>
+                ))}
+                <div className="rounded-2xl bg-[#F92949] text-white text-center p-6 mt-5 mb-3">
+                  <p>
+                    Note: This is an example of the practical measure “Envision
+                    Yourself in the Work”.
+                  </p>
+                  <p>
+                    This information might be helpful for a mentor to know in
+                    order to better guide mentees who have limited exposure to
+                    various aspects of a career.
+                  </p>
+                </div>
+              </span>
+            )
           )}
         </span>
       </div>
