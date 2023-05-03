@@ -17,6 +17,7 @@ export default function SpeechTranscription() {
   const [challenges, setChallenges] = useState("");
   const [questions, setQuestions] = useState("");
   const [isLoading, setLoading] = useState(false);
+  const [disabled, setDisabled] = useState(false);
 
   const startListening = () => {
     SpeechRecognition.startListening({
@@ -93,6 +94,7 @@ export default function SpeechTranscription() {
         setChallenges(JSON.parse(resp_arr[1]));
         setQuestions(JSON.parse(resp_arr[2]));
         setLoading(false);
+        setDisabled(false);
       })
       .catch((error) => {
         console.error(error);
@@ -167,11 +169,13 @@ export default function SpeechTranscription() {
             </button>
           )}
           <button
+            disabled={disabled}
             onClick={() => {
               handleTranscript();
               setLoading(true);
+              setDisabled(true);
             }}
-            className="bg-black font-bold text-white text-lg py-4 px-5 rounded-xl"
+            className="bg-black font-bold text-white text-lg py-4 px-5 rounded-xl disabled:bg-[#BABABA] disabled:cursor-not-allowed"
           >
             Submit
           </button>
@@ -183,9 +187,9 @@ export default function SpeechTranscription() {
             Insights from AI:
           </h1>
           {isLoading ? (
-            // <p>is still loading</p>
-            //<Smile /> //works, but not with the Smile thing
-            <Cisco />
+            // <p>is still loading</p> this is a placeholder for debug
+            //<Smile />
+            <Cisco /> //different kind of loading screen
           ) : (
             values != "" && (
               <span className="text-lg">
