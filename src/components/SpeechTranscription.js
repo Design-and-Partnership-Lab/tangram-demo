@@ -155,7 +155,7 @@ export default function SpeechTranscription() {
           {(speechState == "record" || speechState == "pause") && (
             <button
               onClick={() => setSpeechState("transcript")}
-              className="bg-[#BABABA] min-w-[215px] font-bold text-white text-lg py-4 px-5 rounded-xl"
+              className="bg-black min-w-[215px] font-bold text-white text-lg py-4 px-5 rounded-xl"
             >
               Or Select Existing
             </button>
@@ -163,7 +163,7 @@ export default function SpeechTranscription() {
           {speechState == "transcript" && (
             <button
               onClick={() => setSpeechState("record")}
-              className="bg-[#BABABA] min-w-[215px] font-bold text-white text-lg py-4 px-5 rounded-xl"
+              className="bg-black min-w-[215px] font-bold text-white text-lg py-4 px-5 rounded-xl"
             >
               Or Record Your Own
             </button>
@@ -178,6 +178,9 @@ export default function SpeechTranscription() {
             className="bg-black font-bold text-white text-lg py-4 px-5 rounded-xl disabled:bg-[#BABABA] disabled:cursor-not-allowed"
           >
             Submit
+          </button>
+          <button className="bg-blue-500 min-w-[215px] font-bold text-white text-lg py-4 px-5 rounded-xl">
+            Main
           </button>
         </div>
       </div>
