@@ -57,7 +57,7 @@ export default function SpeechTranscription() {
       {
         role: "system",
         content:
-          '["I\'m Education is a powerful transformative tool.", "I\'m Rewarding to actively help people.", "Opportunity to work with people who have the potential to go somewhere else."];;;["You\'re excited about the prospect of pursuing a PhD and becoming a professor, as it combines your interests in research and teaching.", "You anticipate that the first few years of the PhD program may be challenging as you adjust to the workload and find your bearings."];;;["What was your first year of the PhD. like?", "How did you get through it?"]',
+          '["Education is a powerful transformative tool.", "Rewarding to actively help people.", "Opportunity to work with people who have the potential to go somewhere else."];;;["You\'re excited about the prospect of pursuing a PhD and becoming a professor, as it combines your interests in research and teaching.", "You anticipate that the first few years of the PhD program may be challenging as you adjust to the workload and find your bearings."];;;["What was your first year of the PhD. like?", "How did you get through it?"]',
       },
       {
         role: "user",
