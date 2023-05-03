@@ -47,7 +47,7 @@ export default function SpeechTranscription() {
           ". In up to 3 bullet points, identify what this student perceives as important values for themselves and this career path. Then in up to 3 bullet points, summarize back to the student what they have identified as challenges on their path to becoming a " +
           CAREER_PATH +
           ". Finally, provide one question that a student might want to ask their mentor about in the future." +
-          ' Give the response to each section as a list with three semi-colons separating each one. Within each response, each listed item should be a double quote string. There should be no other text descriptors and it should be possible to use each list directly in python as a list. For example, if the values are apples, oranges, and bananas; the challenges are pears, grapes; and the questions are strawberries, melons; then the following should be the output: ["apples", "oranges", "bananas"];;;["pears", "grapes"];;;["strawberries", "melons"]]',
+          ' Use the word I\'m at least once in the reponse. Give the response to each section as a list with three semi-colons separating each one. Within each response, each listed item should be a double quote string. If there are any apostrophes needed, put a backslash right before it. There should be no other text descriptors and it should be possible to use each list directly in python as a list. For example, if the values are I\'apples, oranges, and bananas; the challenges are pears, grapes; and the questions are strawberries, melons; then the following should be the output: ["I\'apples", "oranges", "bananas"];;;["pears", "grapes"];;;["strawberries", "melons"]]',
       },
       {
         role: "user",
@@ -57,7 +57,7 @@ export default function SpeechTranscription() {
       {
         role: "system",
         content:
-          '["Education is a powerful transformative tool.", "Rewarding to actively help people.", "Opportunity to work with people who have the potential to go somewhere else."];;;["You are excited about the prospect of pursuing a PhD and becoming a professor, as it combines your interests in research and teaching.", "You anticipate that the first few years of the PhD program may be challenging as you adjust to the workload and find your bearings."];;;["What was your first year of the PhD. like?", "How did you get through it?"]',
+          '["I\'m Education is a powerful transformative tool.", "I\'m Rewarding to actively help people.", "Opportunity to work with people who have the potential to go somewhere else."];;;["You\'re excited about the prospect of pursuing a PhD and becoming a professor, as it combines your interests in research and teaching.", "You anticipate that the first few years of the PhD program may be challenging as you adjust to the workload and find your bearings."];;;["What was your first year of the PhD. like?", "How did you get through it?"]',
       },
       {
         role: "user",
@@ -205,7 +205,9 @@ export default function SpeechTranscription() {
                 {challenges.map((it) => (
                   <li>{it}</li>
                 ))}
-                <p className="mt-5 font-bold">Have you ever considered: </p>
+                <p className="mt-5 font-bold">
+                  Consider asking the following questions to your mentor:
+                </p>
                 {questions.map((it) => (
                   <li>{it}</li>
                 ))}
