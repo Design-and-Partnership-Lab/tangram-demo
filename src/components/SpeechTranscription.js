@@ -9,7 +9,6 @@ import Cisco from "./Cisco";
 
 export default function SpeechTranscription() {
   const [textToCopy, setTextToCopy] = useState();
-  const [response, setResponse] = useState(null);
   const [speechState, setSpeechState] = useState("record");
   const router = useRouter();
   const CAREER_PATH = router.query.career;
@@ -188,7 +187,14 @@ export default function SpeechTranscription() {
           >
             Submit
           </button>
-          <button className="bg-blue-500 min-w-[215px] font-bold text-white text-lg py-4 px-5 rounded-xl">
+          <button
+            className="bg-blue-500 min-w-[215px] font-bold text-white text-lg py-4 px-5 rounded-xl"
+            onClick={() =>
+              router.push({
+                pathname: "/",
+              })
+            }
+          >
             Main
           </button>
         </div>
