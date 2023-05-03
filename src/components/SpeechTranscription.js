@@ -4,6 +4,7 @@ import SpeechRecognition, {
 import { useState, useEffect } from "react";
 import { Microphone, Send, PlayerPause } from "tabler-icons-react";
 import { useRouter } from "next/router";
+import Smile from "./Smile";
 
 export default function SpeechTranscription() {
   const [textToCopy, setTextToCopy] = useState();
@@ -14,6 +15,7 @@ export default function SpeechTranscription() {
   const [values, setValues] = useState("");
   const [challenges, setChallenges] = useState("");
   const [questions, setQuestions] = useState("");
+  const [isLoading, setLoading] = useState(false);
 
   const startListening = () => {
     SpeechRecognition.startListening({
