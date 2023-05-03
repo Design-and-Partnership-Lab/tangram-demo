@@ -39,7 +39,13 @@ const Hero = () => {
                 classify as Practical Measures.
               </p>
               <div className="card-actions justify-center">
-                <button className="btn btn-outline">Learn more</button>
+                <a
+                  href="https://sites.uci.edu/axcis"
+                  target="_blank"
+                  className="btn btn-outline"
+                >
+                  Learn more ↗
+                </a>
               </div>
             </div>
           </div>
@@ -103,14 +109,24 @@ const Hero = () => {
           </div>
         </div>
       </div>
-      <button
-        className="btn btn-primary m-12"
-        onClick={() => {
-          router.push("/demo");
-        }}
-      >
-        Go to demo
-      </button>
+      <div className="flex flex-row gap-4">
+        <button
+          className="btn btn-default my-12"
+          onClick={() => {
+            router.push("/");
+          }}
+        >
+          Previous
+        </button>
+        <button
+          className="btn btn-primary my-12"
+          onClick={() => {
+            router.push("/demo");
+          }}
+        >
+          Go to demo
+        </button>
+      </div>
     </>
   );
 };
