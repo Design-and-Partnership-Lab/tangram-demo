@@ -1,8 +1,8 @@
 import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
-import { useState, useEffect } from "react";
-import { Microphone, Send, PlayerPause, Disabled } from "tabler-icons-react";
+import { useState } from "react";
+import { Microphone, PlayerPause } from "tabler-icons-react";
 import { useRouter } from "next/router";
 import Smile from "./Smile";
 import Cisco from "./Cisco";
@@ -18,8 +18,8 @@ export default function SpeechTranscription() {
   const [questions, setQuestions] = useState(null);
   const [isLoading, setLoading] = useState(false);
   const [disabled, setDisabled] = useState(false);
+  const [disabledSel, setDisabledSel] = useState(false);
   const [retry, setRetry] = useState(false);
-  const [transDisabled, setTransDisabled] = useState(false);
 
   const startListening = () => {
     SpeechRecognition.startListening({
@@ -102,10 +102,12 @@ export default function SpeechTranscription() {
           setRetry(false);
           setLoading(false);
           setDisabled(false);
+          setDisabledSel(false);
         } catch {
           setRetry(true);
           setLoading(false);
           setDisabled(false);
+          setDisabledSel(false);
         }
       })
       .catch((error) => {
@@ -186,8 +188,10 @@ export default function SpeechTranscription() {
                 <button
                   onClick={() => {
                     setSpeechState("transcript");
-                    // handleTranscript();
-                    // setLoading(true);
+                    handleTranscript();
+                    setLoading(true);
+                    setDisabled(true);
+                    setDisabledSel(true);
                   }}
                   className="bg-black min-w-[215px] font-bold text-white text-lg py-4 px-5 rounded-xl"
                 >
@@ -197,8 +201,9 @@ export default function SpeechTranscription() {
             )}
             {speechState == "transcript" && (
               <button
+                disabled={disabledSel}
                 onClick={() => setSpeechState("record")}
-                className="bg-black min-w-[215px] font-bold text-white text-lg py-4 px-5 rounded-xl"
+                className="bg-black min-w-[215px] font-bold text-white text-lg py-4 px-5 rounded-xl disabled:bg-[#BABABA] disabled:cursor-not-allowed"
               >
                 Or Record Your Own
               </button>
