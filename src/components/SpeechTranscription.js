@@ -6,6 +6,7 @@ import { Microphone, Send, PlayerPause, Disabled } from "tabler-icons-react";
 import { useRouter } from "next/router";
 import Smile from "./Smile";
 import Cisco from "./Cisco";
+import NavBar from "../components/NavBar";
 
 export default function SpeechTranscription() {
   const [textToCopy, setTextToCopy] = useState();
@@ -18,6 +19,7 @@ export default function SpeechTranscription() {
   const [isLoading, setLoading] = useState(false);
   const [disabled, setDisabled] = useState(false);
   const [retry, setRetry] = useState(false);
+  const [transDisabled, setTransDisabled] = useState(false);
 
   const startListening = () => {
     SpeechRecognition.startListening({
@@ -112,154 +114,171 @@ export default function SpeechTranscription() {
   }
 
   return (
-    <div className="grid grid-rows-1 grid-cols-2 gap-16 mt-3 mx-24">
-      <div className="col-span-1 p-5 relative flex flex-col items-center">
-        <h1 className="text-5xl font-bold text-black">Reflect:</h1>
-        <h2 className="flex flex-col items-center justify-between mt-4 px-4 text-xl">
-          <p className="text-center">
-            As you explore careers, it’s important to imagine what you think
-            life would be like in this potential career.
-          </p>
-          <br />
-          <p className="text-center">
-            <b>Answer the following in 1 - 2 minutes:</b> Imagine yourself as a{" "}
-            {CAREER_PATH}. What aspects of this life seem appealing to you? What
-            aspects of this life seem unappealing to you?
-          </p>
-        </h2>
-        <div className="bg-red-500" onClick={() => setTextToCopy(transcript)}>
-          {transcript}
-        </div>
-        <div className="border rounded-lg border-gray-500 m-4 p-8 w-full list-none h-[378px] overflow-y-auto">
-          {(speechState == "record" || speechState == "pause") && (
-            <span className="flex flex-col justify-center items-center w-full h-full">
-              {speechState == "record" && (
-                <li>
-                  <button
-                    onClick={startListening}
-                    className="bg-[#F3F3F3] rounded-full py-8 px-8"
-                  >
-                    <Microphone size={112} strokeWidth={2} color={"#A3A3A3"} />
-                  </button>
-                </li>
-              )}
-              {speechState == "pause" && (
-                <li>
-                  <button
-                    onClick={stopListening}
-                    className="bg-[#F3F3F3] rounded-full py-8 px-8"
-                  >
-                    <PlayerPause size={112} strokeWidth={2} color={"#A3A3A3"} />
-                  </button>
-                </li>
-              )}
+    <>
+      <div className="flex flex-col items-center justify-between w-full">
+        <header className="flex justify-start w-full items-center">
+          <NavBar />
+        </header>
+      </div>
+      <div className="grid grid-rows-1 grid-cols-2 gap-16 mt-3 mx-24">
+        <div className="col-span-1 p-5 relative flex flex-col items-center">
+          <h1 className="text-5xl font-bold text-black">Reflect:</h1>
+          <h2 className="flex flex-col items-center justify-between mt-4 px-4 text-xl">
+            <p className="text-center">
+              As you explore careers, it’s important to imagine what you think
+              life would be like in this potential career.
+            </p>
+            <br />
+            <p className="text-center">
+              <b>Answer the following in 1 - 2 minutes:</b> Imagine yourself as
+              a {CAREER_PATH}. What aspects of this life seem appealing to you?
+              What aspects of this life seem unappealing to you?
+            </p>
+          </h2>
+          <div className="bg-red-500" onClick={() => setTextToCopy(transcript)}>
+            {transcript}
+          </div>
+          <div className="border rounded-lg border-gray-500 m-4 p-8 w-full list-none h-[378px] overflow-y-auto">
+            {(speechState == "record" || speechState == "pause") && (
+              <span className="flex flex-col justify-center items-center w-full h-full">
+                {speechState == "record" && (
+                  <li>
+                    <button
+                      onClick={startListening}
+                      className="bg-[#F3F3F3] rounded-full py-8 px-8"
+                    >
+                      <Microphone
+                        size={112}
+                        strokeWidth={2}
+                        color={"#A3A3A3"}
+                      />
+                    </button>
+                  </li>
+                )}
+                {speechState == "pause" && (
+                  <li>
+                    <button
+                      onClick={stopListening}
+                      className="bg-[#F3F3F3] rounded-full py-8 px-8"
+                    >
+                      <PlayerPause
+                        size={112}
+                        strokeWidth={2}
+                        color={"#A3A3A3"}
+                      />
+                    </button>
+                  </li>
+                )}
 
-              <p className="pt-6 text-xl font-normal">
-                Click to start and stop the recording.
-              </p>
-            </span>
-          )}
-          {speechState == "transcript" && <p>{existing_transcript}</p>}
-        </div>
-        <div className="flex mt-2 gap-5">
-          {(speechState == "record" || speechState == "pause") && (
-            <div
-              className="tooltip tooltip-bottom"
-              data-tip="Click here to use an example for a data scientist"
-            >
+                <p className="pt-6 text-xl font-normal">
+                  Click to start and stop the recording.
+                </p>
+              </span>
+            )}
+            {speechState == "transcript" && <p>{existing_transcript}</p>}
+          </div>
+          <div className="flex mt-2 gap-5">
+            {(speechState == "record" || speechState == "pause") && (
+              <div
+                className="tooltip tooltip-bottom"
+                data-tip="Click here to use an example for a data scientist"
+              >
+                <button
+                  onClick={() => {
+                    setSpeechState("transcript");
+                    // handleTranscript();
+                    // setLoading(true);
+                  }}
+                  className="bg-black min-w-[215px] font-bold text-white text-lg py-4 px-5 rounded-xl"
+                >
+                  Or Select Existing
+                </button>
+              </div>
+            )}
+            {speechState == "transcript" && (
               <button
-                onClick={() => {
-                  setSpeechState("transcript");
-                  handleTranscript();
-                  setLoading(true);
-                }}
+                onClick={() => setSpeechState("record")}
                 className="bg-black min-w-[215px] font-bold text-white text-lg py-4 px-5 rounded-xl"
               >
-                Or Select Existing
+                Or Record Your Own
               </button>
-            </div>
-          )}
-          {speechState == "transcript" && (
+            )}
             <button
-              onClick={() => setSpeechState("record")}
-              className="bg-black min-w-[215px] font-bold text-white text-lg py-4 px-5 rounded-xl"
+              disabled={disabled}
+              onClick={() => {
+                handleTranscript();
+                setLoading(true);
+                setDisabled(true);
+              }}
+              className="bg-black font-bold text-white text-lg py-4 px-5 rounded-xl disabled:bg-[#BABABA] disabled:cursor-not-allowed"
             >
-              Or Record Your Own
+              Submit
             </button>
-          )}
-          <button
-            disabled={disabled}
-            onClick={() => {
-              handleTranscript();
-              setLoading(true);
-              setDisabled(true);
-            }}
-            className="bg-black font-bold text-white text-lg py-4 px-5 rounded-xl disabled:bg-[#BABABA] disabled:cursor-not-allowed"
-          >
-            Submit
-          </button>
-          <button
-            className="bg-blue-500 min-w-[215px] font-bold text-white text-lg py-4 px-5 rounded-xl"
-            onClick={() =>
-              router.push({
-                pathname: "/",
-              })
+            {/* <button
+              className="bg-blue-500 min-w-[215px] font-bold text-white text-lg py-4 px-5 rounded-xl"
+              onClick={() =>
+                router.push({
+                  pathname: "/",
+                })
+              }
+            >
+              Main
+            </button> */}
+          </div>
+        </div>
+        <div className="col-span-1 px-10 py-5 mt-8 border rounded-2xl border-[#F92949] h-[700px] overflow-y-auto">
+          <span className="flex flex-col place-self-start">
+            <h1 className="text-5xl text-black font-bold mt-3 text-center">
+              Insights from AI:
+            </h1>
+            {
+              isLoading && (
+                // <p>is still loading</p> this is a placeholder for debug
+                //<Smile />
+                <Cisco />
+              ) //different kind of loading screen
             }
-          >
-            Main
-          </button>
+            {!isLoading && !retry && values && (
+              <span className="text-lg">
+                <p className="mt-7 font-bold">
+                  According to your audio survey, these are your values:
+                </p>
+                {values.map((it) => (
+                  <li>{it}</li>
+                ))}
+                <p className="mt-5 font-bold">
+                  The following aspects surfaced:
+                </p>
+                {challenges.map((it) => (
+                  <li>{it}</li>
+                ))}
+                <p className="mt-5 font-bold">
+                  Consider asking the following questions to your mentor:
+                </p>
+                {questions.map((it) => (
+                  <li>{it}</li>
+                ))}
+                <div className="rounded-2xl bg-[#F92949] text-white text-center p-6 mt-5 mb-3">
+                  <p>
+                    Note: This is an example of the practical measure “Envision
+                    Yourself in the Work”.
+                  </p>
+                  <p>
+                    This information might be helpful for a mentor to know in
+                    order to better guide mentees who have limited exposure to
+                    various aspects of a career.
+                  </p>
+                </div>
+              </span>
+            )}
+            {!isLoading && retry && (
+              <p className="text-lg mt-64 font-bold text-center">
+                Please try again and rephrase your response.
+              </p>
+            )}
+          </span>
         </div>
       </div>
-      <div className="col-span-1 px-10 py-5 mt-8 border rounded-2xl border-[#F92949] h-[700px] overflow-y-auto">
-        <span className="flex flex-col place-self-start">
-          <h1 className="text-5xl text-black font-bold mt-3 text-center">
-            Insights from AI:
-          </h1>
-          {
-            isLoading && (
-              // <p>is still loading</p> this is a placeholder for debug
-              //<Smile />
-              <Cisco />
-            ) //different kind of loading screen
-          }
-          {!isLoading && !retry && values && (
-            <span className="text-lg">
-              <p className="mt-7 font-bold">
-                According to your audio survey, these are your values:
-              </p>
-              {values.map((it) => (
-                <li>{it}</li>
-              ))}
-              <p className="mt-5 font-bold">The following aspects surfaced:</p>
-              {challenges.map((it) => (
-                <li>{it}</li>
-              ))}
-              <p className="mt-5 font-bold">
-                Consider asking the following questions to your mentor:
-              </p>
-              {questions.map((it) => (
-                <li>{it}</li>
-              ))}
-              <div className="rounded-2xl bg-[#F92949] text-white text-center p-6 mt-5 mb-3">
-                <p>
-                  Note: This is an example of the practical measure “Envision
-                  Yourself in the Work”.
-                </p>
-                <p>
-                  This information might be helpful for a mentor to know in
-                  order to better guide mentees who have limited exposure to
-                  various aspects of a career.
-                </p>
-              </div>
-            </span>
-          )}
-          {!isLoading && retry && (
-            <p className="text-lg mt-64 font-bold text-center">
-              Please try again and rephrase your response.
-            </p>
-          )}
-        </span>
-      </div>
-    </div>
+    </>
   );
 }
