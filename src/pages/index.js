@@ -35,7 +35,7 @@ function Hero() {
             people develop deeper identities toward career pathways?
           </h1>
           <h1 className="text-5xl py-6">
-            <span className="font-bold">The Gates Project:</span> An
+            <span className="font-bold">Introducing Tangram:</span> An
             AI-augmented space for reflection for undergraduates exploring their
             careers
           </h1>

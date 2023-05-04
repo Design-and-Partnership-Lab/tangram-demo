@@ -69,7 +69,7 @@ const Hero = () => {
               </h2>
               <p>
                 <span className="font-bold">First,</span> we ask students to
-                reflect using the Practical Measures using audio recordings.
+                reflect on the Practical Measures via audio recordings.
               </p>
               <p>
                 <span className="font-bold">Then,</span> we use ChatGPT to

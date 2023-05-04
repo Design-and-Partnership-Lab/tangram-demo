@@ -11,13 +11,7 @@ export default function Navbar() {
       <div className="flex-none">
         <ul className="menu menu-horizontal px-1">
           <li>
-            <a>Home</a>
-          </li>
-          <li>
-            <a>More About DapLab</a>
-          </li>
-          <li>
-            <a>More About AXCIS</a>
+            <a href="/">Home</a>
           </li>
         </ul>
       </div>
