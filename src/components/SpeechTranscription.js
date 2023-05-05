@@ -63,6 +63,16 @@ export default function SpeechTranscription() {
       },
       {
         role: "user",
+        content:
+          "working in data science and analytics is appealing because I’ve always liked the formula, the input and output aspect of Statistics. There’s always an answer and a way to get the answers or you have data to see what you answered, you could come up with. I think why research was really interesting for me as a first time RA because you can code your own projects. And once you have your project, you have all this data that you can do whatever you want. I love cleaning data which is a tedious task, but I think that’s appealing to change the repetitiveness and the small attention to detail that it requires. So it’s very specific and very important. The one thing that is unappealing to me or sort of like a negative factor is the amount of time and money. It takes a couple of years to get your Master’s to your PhD, to be able to publish your work. I feel like there’s pressure from everyone in the social circle to continue to do more work and less time. I’m almost done with my undergraduate degree, and time is going by really fast, besides being afraid of like committing all of my time and efforts into getting a degree, another unappealing thing is the solitary aspect like it’s just you and your project. It’s mostly you and a small team. So I feel like your struggle would just remain there, so it’s very important to network outside of your circle but it’s really hard.",
+      },
+      {
+        role: "system",
+        content:
+          '["The straightforwardness and formulaic nature of data science and data analytics.", "The attention to detail that data science requires, such as when cleaning data.", "Continual learning by building new things with code."];;;["You are worried that it takes a long time to get a PhD, and there will be a lot of pressure.", "You anticipate that getting a PhD will be isolating; it can be hard to network and find support systems in academia."];;;["What was your first year of the PhD. like?", "How did you get through it?"]',
+      },
+      {
+        role: "user",
         content: speechState == "transcript" ? existing_transcript : transcript,
       },
       //   {
@@ -105,6 +115,7 @@ export default function SpeechTranscription() {
           setDisabledSel(false);
         } catch {
           setRetry(true);
+          // setValues(resp);
           setLoading(false);
           setDisabled(false);
           setDisabledSel(false);
