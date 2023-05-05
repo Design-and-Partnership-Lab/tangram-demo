@@ -103,30 +103,30 @@ export default function Demo() {
         <div className="modal">
           <div className="modal-box">
             <h3 className="font-bold text-2xl">Measure: {measure}</h3>
-            <p className="py-4 text-xl text-slate-600">
+            <div className="py-4 text-xl text-slate-600">
               <div
                 className={`badge bg-[${measureColors[measure]}] border-none text-white font-bold`}
               >
                 About the Measure{" "}
               </div>{" "}
               {measure ? measureInfo[measure][0] : null}
-            </p>
-            <p className="py-4 text-xl text-slate-600">
+            </div>
+            <div className="py-4 text-xl text-slate-600">
               <div
                 className={`badge bg-[${measureColors[measure]}] border-none text-white font-bold`}
               >
                 Rationale{" "}
               </div>{" "}
               {measure ? measureInfo[measure][2] : null}
-            </p>
-            <p className="py-4 text-xl text-slate-600">
+            </div>
+            <div className="py-4 text-xl text-slate-600">
               <div
                 className={`badge bg-[${measureColors[measure]}] border-none text-white font-bold`}
               >
                 Example Question{" "}
               </div>{" "}
               {measure ? measureInfo[measure][1] : null}
-            </p>
+            </div>
 
             <div className="modal-action">
               <label htmlFor="pm-modal" className="btn">
