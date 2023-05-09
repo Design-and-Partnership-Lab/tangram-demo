@@ -7,6 +7,7 @@ import Smile from "./Smile";
 import Cisco from "./Cisco";
 import NavBar from "../components/NavBar";
 import RecordButton from "../components/RecordButton";
+import { Trans, withTranslation } from "react-i18next";
 
 export default function SpeechTranscription() {
   const [textToCopy, setTextToCopy] = useState();
@@ -35,6 +36,30 @@ export default function SpeechTranscription() {
   const existing_transcript =
     "A lot of the aspects of a job in research actually appeal to me and especially within both, education and Technology. I like to think through things and stops and break things down. I also like to think through and consider problems, that might need to be solved and the steps you might need to take to get there and I want to make sure that I work in a job that requires me to learn from and work with others in the future because I think there’s something new to be learned every day and I think there’s just something cool about what thinking of new ideas and working in an expanding field.	I don’t know if I would describe it as unappealing because in the same way, it’s a reason that this job or this feels as appealing to me, but maybe the fact that technology changes all the time and so there will always be new things to consider and new technologies that might disrupt the field or a specific thing that I might be working on. But I think at the same time technology always be used for good if we try and because I like both education and technology I would just want to take it as an opportunity to think and learn about how long what I’m working on might be made better through that.";
 
+  const existing_response = (
+    <Trans>
+      Value:
+      <br />- Believes education is one of the most important aspects ofsociety.
+      <br />- Finds it rewarding to actively help people.
+      <br />- Excited about the prospect of being able to combine interests
+      inresearch and teaching.
+      <br />
+      <br />
+      Challenges:
+      <br />- Anticipates that the first few years of the PhD program may
+      bechallenging as they adjust to the workload and find their bearings.
+      <br />- Acknowledges the competitive nature of the job market for
+      becominga professor.
+      <br />- Concerned about balancing the responsibilities of
+      research,teaching, and other aspects of the job.
+      <br />
+      <br />
+      Question:
+      <br />- What is something you wish you knew before pursuing a PhD
+      andentering academia full-time?
+    </Trans>
+  );
+
   const APIBODY = {
     model: "gpt-3.5-turbo",
     messages: [
@@ -45,7 +70,7 @@ export default function SpeechTranscription() {
           CAREER_PATH +
           ". In up to 3 bullet points, identify what this student perceives as important values for themselves and this career path. Then in up to 3 bullet points, summarize back to the student what they have identified as challenges on their path to becoming a " +
           CAREER_PATH +
-          ". Finally, provide one question that a student might want to ask their mentor about in the future.",
+          ". Finally, provide one question that a student might want to ask their mentor about in the future. After each header and bullet point, add <br />. Between each section, make sure there are two <br />, or br /><br />.", // Lastly, add <Trans> at the beginning and </Trans> at the end of your response.",
       },
       {
         role: "user",
@@ -55,11 +80,13 @@ export default function SpeechTranscription() {
       {
         role: "assistant",
         content:
-          "Value: - Education is a powerful transformative tool. - Rewarding to actively help people. Opportunity to work with people who have the potential to go somewhere else. Challenges: - You're excited about the prospect of pursuing a PhD and becoming a professor, as it combines your interests in research and teaching. - You anticipate that the first few years of the PhD program may be challenging as you adjust to the workload and find your bearings. Questions: - What was your first year of the PhD. like? - How did you get through it?",
+          "Value:<br />- Believes education is one of the most important aspects ofsociety.<br />- Finds it rewarding to actively help people.<br />- Excited about the prospect of being able to combine interests inresearch and teaching.<br /><br />Challenges:<br />- Anticipates that the first few years of the PhD program may bechallenging as they adjust to the workload and find their bearings.<br />- Acknowledges the competitive nature of the job market for becominga professor.<br />- Concerned about balancing the responsibilities of research,teaching, and other aspects of the job.<br /><br />Question:<br />- What is something you wish you knew before pursuing a PhD andentering academia full-time?",
       },
       {
         role: "user",
-        content: speechState == "transcript" ? existing_transcript : transcript,
+        // content: speechState == "transcript" ? existing_transcript : transcript,
+        content:
+          "I think education is one of the most important things everybody goes through the education system. So I think it's a really good and also children don't know anything. So by giving, they start off not knowing anything. So by giving them the gift of Education, the tools of a good quality education. I think that's important and it will help just Society in general and education really is a powerful transformative tool. So I want to do that and I think I really enjoy the work aspect of that. It would be rewarding cuz I'm actually actively helping people and I want to do a job where I'm actually about actually actively helping people and also it's you could say the same for a doctor but at the same time you've working with people at the worst in Life but in education you working at people who have the opportunity to go someplace else.",
       },
     ],
     max_tokens: 200,
@@ -84,16 +111,14 @@ export default function SpeechTranscription() {
         const resp = data.choices[0].message.content;
         console.log("logged resp: ", resp);
         try {
-          setResponse(resp);
+          setResponse(<Trans>resp</Trans>);
           setLoading(false);
           setDisabled(false);
           setDisabledSel(false);
-          setShowSoundWave(false);
         } catch {
           setLoading(false);
           setDisabled(false);
           setDisabledSel(false);
-          setShowSoundWave(false);
         }
       })
       .catch((error) => {
@@ -134,35 +159,6 @@ export default function SpeechTranscription() {
                   startListening={startListening}
                   stopListening={stopListening}
                 />
-                {/* {speechState == "record" && (
-                  <li>
-                    <button
-                      onClick={startListening}
-                      className="bg-[#F3F3F3] rounded-full py-8 px-8"
-                    >
-                      <Microphone
-                        size={112}
-                        strokeWidth={2}
-                        color={"#A3A3A3"}
-                      />
-                    </button>
-                  </li>
-                )}
-                {speechState == "pause" && (
-                  <li>
-                    <button
-                      onClick={stopListening}
-                      className="bg-[#F3F3F3] rounded-full py-8 px-8"
-                    >
-                      <PlayerPause
-                        size={112}
-                        strokeWidth={2}
-                        color={"#A3A3A3"}
-                      />
-                    </button>
-                  </li>
-                )} */}
-
                 <p className="pt-6 text-xl font-normal">
                   Click to start and stop the recording.
                 </p>
@@ -178,11 +174,15 @@ export default function SpeechTranscription() {
               >
                 <button
                   onClick={() => {
-                    setSpeechState("transcript");
-                    handleTranscript();
                     setLoading(true);
                     setDisabled(true);
-                    setDisabledSel(true);
+                    setSpeechState("transcript");
+                    setResponse(existing_response);
+
+                    setTimeout(() => {
+                      setLoading(false);
+                      setDisabled(false);
+                    }, 1500);
                   }}
                   className="bg-black min-w-[215px] font-bold text-white text-lg py-4 px-5 rounded-xl"
                 >
@@ -202,9 +202,17 @@ export default function SpeechTranscription() {
             <button
               disabled={disabled}
               onClick={() => {
-                handleTranscript();
                 setLoading(true);
                 setDisabled(true);
+                if (speechState == "transcript") {
+                  setResponse(existing_response);
+                  setTimeout(() => {
+                    setLoading(false);
+                    setDisabled(false);
+                  }, 1500);
+                } else {
+                  handleTranscript();
+                }
               }}
               className="bg-black font-bold text-white text-lg py-4 px-5 rounded-xl disabled:bg-[#BABABA] disabled:cursor-not-allowed"
             >

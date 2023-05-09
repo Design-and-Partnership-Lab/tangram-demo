@@ -1,5 +1,5 @@
-import React, { CSSProperties, useState, useEffect } from "react";
-import { motion, useAnimation, Variants } from "framer-motion";
+import React, { useEffect } from "react";
+import { motion, useAnimation } from "framer-motion";
 import { Microphone, PlayerPause } from "tabler-icons-react";
 
 const BASE_COLOR = `#F3F3F3`;
@@ -61,7 +61,6 @@ export default function RecordButton({
         await outerCircleAnimation.start("circle");
       }
     })();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [speechState]);
 
   useEffect(() => {
@@ -78,12 +77,7 @@ export default function RecordButton({
 
   return (
     <>
-      <motion.div
-        drag
-        style={styles.container}
-        // onMouseEnter={() => setHover(true)}
-        // onMouseLeave={() => setHover(false)}
-      >
+      <motion.div drag style={styles.container}>
         {speechState == "record" && (
           <button
             onClick={startListening}
