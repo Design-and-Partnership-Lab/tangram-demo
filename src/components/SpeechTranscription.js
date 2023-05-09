@@ -13,13 +13,10 @@ export default function SpeechTranscription() {
   const [speechState, setSpeechState] = useState("record");
   const router = useRouter();
   const CAREER_PATH = router.query.career;
-  const [values, setValues] = useState(null);
-  const [challenges, setChallenges] = useState(null);
-  const [questions, setQuestions] = useState(null);
+  const [response, setResponse] = useState(null);
   const [isLoading, setLoading] = useState(false);
   const [disabled, setDisabled] = useState(false);
   const [disabledSel, setDisabledSel] = useState(false);
-  const [retry, setRetry] = useState(false);
 
   const startListening = () => {
     SpeechRecognition.startListening({
@@ -48,8 +45,7 @@ export default function SpeechTranscription() {
           CAREER_PATH +
           ". In up to 3 bullet points, identify what this student perceives as important values for themselves and this career path. Then in up to 3 bullet points, summarize back to the student what they have identified as challenges on their path to becoming a " +
           CAREER_PATH +
-          ". Finally, provide one question that a student might want to ask their mentor about in the future." +
-          ' Use the word I\'m at least once in the reponse. Give the response to each section as a list with three semi-colons separating each one. Within each response, each listed item should be a double quote string. If there are any apostrophes needed, put a backslash right before it. There should be no other text descriptors and it should be possible to use each list directly in python as a list. For example, if the values are I\'apples, oranges, and bananas; the challenges are pears, grapes; and the questions are strawberries, melons; then the following should be the output: ["I\'apples", "oranges", "bananas"];;;["pears", "grapes"];;;["strawberries", "melons"]]',
+          ". Finally, provide one question that a student might want to ask their mentor about in the future.",
       },
       {
         role: "user",
@@ -59,17 +55,12 @@ export default function SpeechTranscription() {
       {
         role: "system",
         content:
-          '["Education is a powerful transformative tool.", "Rewarding to actively help people.", "Opportunity to work with people who have the potential to go somewhere else."];;;["You\'re excited about the prospect of pursuing a PhD and becoming a professor, as it combines your interests in research and teaching.", "You anticipate that the first few years of the PhD program may be challenging as you adjust to the workload and find your bearings."];;;["What was your first year of the PhD. like?", "How did you get through it?"]',
+          "Education is a powerful transformative tool. Rewarding to actively help people. Opportunity to work with people who have the potential to go somewhere else. You're excited about the prospect of pursuing a PhD and becoming a professor, as it combines your interests in research and teaching. You anticipate that the first few years of the PhD program may be challenging as you adjust to the workload and find your bearings. What was your first year of the PhD. like? How did you get through it?",
       },
       {
         role: "user",
         content: speechState == "transcript" ? existing_transcript : transcript,
       },
-      //   {
-      //     role: "user",
-      //     content:
-      //       // "A lot of the aspects of a job in research actually appeal to me and especially within both, education and Technology. I like to think through things and stops and break things down. I also like to think through and consider problems, that might need to be solved and the steps you might need to take to get there and I want to make sure that I work in a job that requires me to learn from and work with others in the future because I think there’s something new to be learned every day and I think there’s just something cool about what thinking of new ideas and working in an expanding field.	I don’t know if I would describe it as unappealing because in the same way, it’s a reason that this job or this feels as appealing to me, but maybe the fact that technology changes all the time and so there will always be new things to consider and new technologies that might disrupt the field or a specific thing that I might be working on. But I think at the same time technology always be used for good if we try and because I like both education and technology I would just want to take it as an opportunity to think and learn about how long what I’m working on might be made better through that.",
-      //   },
     ],
     max_tokens: 200,
     top_p: 1.0,
@@ -91,20 +82,13 @@ export default function SpeechTranscription() {
       })
       .then((data) => {
         const resp = data.choices[0].message.content;
-        console.log(resp);
-        const resp_arr = resp.split(";;;");
-        console.log(resp_arr);
-        console.log(resp_arr.length);
+        console.log("logged resp: ", resp);
         try {
-          setValues(JSON.parse(resp_arr[0]));
-          setChallenges(JSON.parse(resp_arr[1]));
-          setQuestions(JSON.parse(resp_arr[2]));
-          setRetry(false);
+          setResponse(resp);
           setLoading(false);
           setDisabled(false);
           setDisabledSel(false);
         } catch {
-          setRetry(true);
           setLoading(false);
           setDisabled(false);
           setDisabledSel(false);
@@ -243,26 +227,12 @@ export default function SpeechTranscription() {
                 <Cisco />
               ) //different kind of loading screen
             }
-            {!isLoading && !retry && values && (
+            {!isLoading && response && (
               <span className="text-lg">
                 <p className="mt-7 font-bold">
-                  According to your audio survey, these are your values:
+                  According to your audio survey, ChatGPT thinks:
                 </p>
-                {values.map((it) => (
-                  <li>{it}</li>
-                ))}
-                <p className="mt-5 font-bold">
-                  The following aspects surfaced:
-                </p>
-                {challenges.map((it) => (
-                  <li>{it}</li>
-                ))}
-                <p className="mt-5 font-bold">
-                  Consider asking the following questions to your mentor:
-                </p>
-                {questions.map((it) => (
-                  <li>{it}</li>
-                ))}
+                {response}
                 <div className="rounded-2xl bg-[#F92949] text-white text-center p-6 mt-5 mb-3">
                   <p>
                     Note: This is an example of the practical measure “Envision
@@ -275,11 +245,6 @@ export default function SpeechTranscription() {
                   </p>
                 </div>
               </span>
-            )}
-            {!isLoading && retry && (
-              <p className="text-lg mt-64 font-bold text-center">
-                Please try again and rephrase your response.
-              </p>
             )}
           </span>
         </div>
