@@ -53,9 +53,9 @@ export default function SpeechTranscription() {
           "I think education is one of the most important things everybody goes through the education system. So I think it’s a really good and also children don’t know anything. So by giving, they start off not knowing anything. So by giving them the gift of Education, the tools of a good quality education. I think that’s important and it will help just Society in general and education really is a powerful transformative tool. So I want to do that and I think I really enjoy the work aspect of that. It would be rewarding cuz I’m actually actively helping people and I want to do a job where I’m actually about actually actively helping people and also it’s you could say the same for a doctor but at the same time you’ve working with people at the worst in Life but in education you working at people who have the opportunity to go someplace else. I know an issue with the Ph.D program especially with the first few years. It’ll be a lot of work understanding your bearings and stuff which I know can be difficult at first but overall I see way more upsides than downsides and I feel like getting a PhD and becoming a professor is a career I really want to pursue and that I’d be really happy cuz I really love research and I really love like teaching and that combines both of them. So I couldn’t think of a better career for myself.",
       },
       {
-        role: "system",
+        role: "assistant",
         content:
-          "Education is a powerful transformative tool. Rewarding to actively help people. Opportunity to work with people who have the potential to go somewhere else. You're excited about the prospect of pursuing a PhD and becoming a professor, as it combines your interests in research and teaching. You anticipate that the first few years of the PhD program may be challenging as you adjust to the workload and find your bearings. What was your first year of the PhD. like? How did you get through it?",
+          "Value: - Education is a powerful transformative tool. - Rewarding to actively help people. Opportunity to work with people who have the potential to go somewhere else. Challenges: - You're excited about the prospect of pursuing a PhD and becoming a professor, as it combines your interests in research and teaching. - You anticipate that the first few years of the PhD program may be challenging as you adjust to the workload and find your bearings. Questions: - What was your first year of the PhD. like? - How did you get through it?",
       },
       {
         role: "user",
@@ -121,7 +121,7 @@ export default function SpeechTranscription() {
               What aspects of this life seem unappealing to you?
             </p>
           </h2>
-          <div className="bg-red-500" onClick={() => setTextToCopy(transcript)}>
+          <div className="bg-red-100" onClick={() => setTextToCopy(transcript)}>
             {transcript}
           </div>
           <div className="border rounded-lg border-gray-500 m-4 p-8 w-full list-none h-[378px] overflow-y-auto">
