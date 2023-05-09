@@ -2,11 +2,11 @@ import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
 import { useState } from "react";
-import { Microphone, PlayerPause } from "tabler-icons-react";
 import { useRouter } from "next/router";
 import Smile from "./Smile";
 import Cisco from "./Cisco";
 import NavBar from "../components/NavBar";
+import RecordButton from "../components/RecordButton";
 
 export default function SpeechTranscription() {
   const [textToCopy, setTextToCopy] = useState();
@@ -88,10 +88,12 @@ export default function SpeechTranscription() {
           setLoading(false);
           setDisabled(false);
           setDisabledSel(false);
+          setShowSoundWave(false);
         } catch {
           setLoading(false);
           setDisabled(false);
           setDisabledSel(false);
+          setShowSoundWave(false);
         }
       })
       .catch((error) => {
@@ -127,7 +129,12 @@ export default function SpeechTranscription() {
           <div className="border rounded-lg border-gray-500 m-4 p-8 w-full list-none h-[378px] overflow-y-auto">
             {(speechState == "record" || speechState == "pause") && (
               <span className="flex flex-col justify-center items-center w-full h-full">
-                {speechState == "record" && (
+                <RecordButton
+                  speechState={speechState}
+                  startListening={startListening}
+                  stopListening={stopListening}
+                />
+                {/* {speechState == "record" && (
                   <li>
                     <button
                       onClick={startListening}
@@ -154,7 +161,7 @@ export default function SpeechTranscription() {
                       />
                     </button>
                   </li>
-                )}
+                )} */}
 
                 <p className="pt-6 text-xl font-normal">
                   Click to start and stop the recording.
@@ -203,16 +210,6 @@ export default function SpeechTranscription() {
             >
               Submit
             </button>
-            {/* <button
-              className="bg-blue-500 min-w-[215px] font-bold text-white text-lg py-4 px-5 rounded-xl"
-              onClick={() =>
-                router.push({
-                  pathname: "/",
-                })
-              }
-            >
-              Main
-            </button> */}
           </div>
         </div>
         <div className="col-span-1 px-10 py-5 mt-8 border rounded-2xl border-[#F92949] h-[700px] overflow-y-auto">
