@@ -222,7 +222,7 @@ export default function SpeechTranscription() {
                   </>
                 ))}
                 {console.log("RESP", response)}
-                <div className="rounded-2xl bg-[#F92949] text-white text-center p-6 mt-5 mb-3">
+                <div className="rounded-2xl bg-[#a96771] text-white text-center p-6 mt-5 mb-3">
                   <p>
                     Note: This is an example of the practical measure “Envision
                     Yourself in the Work”.
