@@ -51,6 +51,16 @@ export default function Demo() {
       },
     });
   };
+  const handleSelectExisting = async (event) => {
+    event.preventDefault();
+    setValid(true);
+    router.push({
+      pathname: "/speechInput",
+      query: {
+        career: "existing",
+      },
+    });
+  };
   const [valid, setValid] = useState(false);
   const [measure, setMeasure] = useState("Self-Positioning");
   return (
@@ -181,6 +191,7 @@ export default function Demo() {
               >
                 Go to demo
               </button>
+              <button onClick={handleSelectExisting}>Select existing</button>
             </div>
           </form>
         </div>

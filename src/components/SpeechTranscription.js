@@ -1,18 +1,19 @@
 import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import Smile from "./Smile";
 import Cisco from "./Cisco";
 import NavBar from "../components/NavBar";
 import RecordButton from "../components/RecordButton";
+import { Carrot } from "tabler-icons-react";
 
 export default function SpeechTranscription() {
   const [textToCopy, setTextToCopy] = useState();
-  const [speechState, setSpeechState] = useState("record");
   const router = useRouter();
   const CAREER_PATH = router.query.career;
+  const [speechState, setSpeechState] = useState("record");
   const [response, setResponse] = useState(null);
   const [isLoading, setLoading] = useState(false);
   const [disabled, setDisabled] = useState(false);
@@ -44,16 +45,12 @@ export default function SpeechTranscription() {
       {
         role: "system",
         content:
-          "Please read the following excerpt from an interview with an undergraduate student who is interested in becoming a " +
-          CAREER_PATH +
-          ". In up to 3 bullet points, identify what this student perceives as important values for themselves and this career path. Then in up to 3 bullet points, summarize back to the student what they have identified as challenges on their path to becoming a " +
-          CAREER_PATH +
-          ". Finally, provide one question that a student might want to ask their mentor about in the future. After each header and bullet point, add \n. Between each section, make sure there are two \n, or \n\n.",
+          "Please read the following excerpt from an interview with an undergraduate student who is interested in a particular career. In up to 3 bullet points, identify what this student perceives as important values for themselves and this career path. Then in up to 3 bullet points, summarize back to the student what they have identified as challenges on their path to that career. Finally, provide one question that a student might want to ask their mentor about in the future. After each header and bullet point, add \n. Between each section, make sure there are two \n, or \n\n.",
       },
       {
         role: "user",
         content:
-          "I think education is one of the most important things everybody goes through the education system. So I think it’s a really good and also children don’t know anything. So by giving, they start off not knowing anything. So by giving them the gift of Education, the tools of a good quality education. I think that’s important and it will help just Society in general and education really is a powerful transformative tool. So I want to do that and I think I really enjoy the work aspect of that. It would be rewarding cuz I’m actually actively helping people and I want to do a job where I’m actually about actually actively helping people and also it’s you could say the same for a doctor but at the same time you’ve working with people at the worst in Life but in education you working at people who have the opportunity to go someplace else. I know an issue with the Ph.D program especially with the first few years. It’ll be a lot of work understanding your bearings and stuff which I know can be difficult at first but overall I see way more upsides than downsides and I feel like getting a PhD and becoming a professor is a career I really want to pursue and that I’d be really happy cuz I really love research and I really love like teaching and that combines both of them. So I couldn’t think of a better career for myself.",
+          "I am interested in becoming an education researcher. I think education is one of the most important things everybody goes through the education system. So I think it’s a really good and also children don’t know anything. So by giving, they start off not knowing anything. So by giving them the gift of Education, the tools of a good quality education. I think that’s important and it will help just Society in general and education really is a powerful transformative tool. So I want to do that and I think I really enjoy the work aspect of that. It would be rewarding cuz I’m actually actively helping people and I want to do a job where I’m actually about actually actively helping people and also it’s you could say the same for a doctor but at the same time you’ve working with people at the worst in Life but in education you working at people who have the opportunity to go someplace else. I know an issue with the Ph.D program especially with the first few years. It’ll be a lot of work understanding your bearings and stuff which I know can be difficult at first but overall I see way more upsides than downsides and I feel like getting a PhD and becoming a professor is a career I really want to pursue and that I’d be really happy cuz I really love research and I really love like teaching and that combines both of them. So I couldn’t think of a better career for myself.",
       },
       {
         role: "assistant",
@@ -62,7 +59,11 @@ export default function SpeechTranscription() {
       },
       {
         role: "user",
-        content: speechState == "transcript" ? existing_transcript : transcript,
+        content:
+          "I am interested in coming a " + CAREER_PATH + speechState ==
+          "transcript"
+            ? existing_transcript
+            : transcript,
       },
     ],
     max_tokens: 200,
@@ -70,6 +71,19 @@ export default function SpeechTranscription() {
     frequency_penalty: 0.0,
     presence_penalty: 0.0,
   };
+
+  useEffect(() => {
+    if (CAREER_PATH == "existing") {
+      setSpeechState("transcript");
+      setLoading(true);
+      setDisabled(true);
+      setResponse(existing_response.split("\n\n"));
+      setTimeout(() => {
+        setLoading(false);
+        setDisabled(false);
+      }, 1500);
+    }
+  }, [CAREER_PATH]);
 
   async function handleTranscript() {
     await fetch("https://api.openai.com/v1/chat/completions", {
@@ -120,8 +134,10 @@ export default function SpeechTranscription() {
             <br />
             <p className="text-center">
               <b>Answer the following in 1 - 2 minutes:</b> Imagine yourself as
-              a {CAREER_PATH}. What aspects of this life seem appealing to you?
-              What aspects of this life seem unappealing to you?
+              a{" "}
+              {CAREER_PATH == "existing" ? "education researcher" : CAREER_PATH}
+              . What aspects of this life seem appealing to you? What aspects of
+              this life seem unappealing to you?
             </p>
           </h2>
           <div className="bg-red-100" onClick={() => setTextToCopy(transcript)}>
@@ -213,11 +229,23 @@ export default function SpeechTranscription() {
                 <p className="mt-7 font-bold">
                   According to your audio survey, ChatGPT thinks:
                 </p>
-                {response.map((section) => (
+                {response.slice(0, 2).map((section) => (
                   <>
                     {section.split("\n").map((line) => (
                       <p>{line}</p>
                     ))}
+                    <br />
+                  </>
+                ))}
+                <p className="font-bold">QUESTION:</p>
+                {response.slice(2, 3).map((section) => (
+                  <>
+                    {section
+                      .split("\n")
+                      .slice(1)
+                      .map((line) => (
+                        <p>{line}</p>
+                      ))}
                     <br />
                   </>
                 ))}
