@@ -38,7 +38,7 @@ const Hero = () => {
                 of different facets of youths’ identity, through what we
                 classify as Practical Measures.
               </p>
-              <div className="card-actions justify-center">
+              {/* <div className="card-actions justify-center">
                 <a
                   href="https://sites.uci.edu/axcis"
                   target="_blank"
@@ -46,7 +46,7 @@ const Hero = () => {
                 >
                   Learn more ↗
                 </a>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
