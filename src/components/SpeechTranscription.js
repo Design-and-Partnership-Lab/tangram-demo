@@ -159,38 +159,16 @@ export default function SpeechTranscription() {
             {speechState == "transcript" && <p>{existing_transcript}</p>}
           </div>
           <div className="flex mt-2 gap-5">
-            {(speechState == "record" || speechState == "pause") && (
-              <div
-                className="tooltip tooltip-bottom"
-                data-tip="Click here to use an example for a data scientist"
-              >
-                <button
-                  onClick={() => {
-                    setLoading(true);
-                    setDisabled(true);
-                    setSpeechState("transcript");
-                    setResponse(existing_response.split("\n\n"));
-
-                    setTimeout(() => {
-                      setLoading(false);
-                      setDisabled(false);
-                    }, 1500);
-                  }}
-                  className="bg-black min-w-[215px] font-bold text-white text-lg py-4 px-5 rounded-xl"
-                >
-                  Or Select Existing
-                </button>
-              </div>
-            )}
-            {speechState == "transcript" && (
-              <button
-                disabled={disabledSel}
-                onClick={() => setSpeechState("record")}
-                className="bg-black min-w-[215px] font-bold text-white text-lg py-4 px-5 rounded-xl disabled:bg-[#BABABA] disabled:cursor-not-allowed"
-              >
-                Or Record Your Own
-              </button>
-            )}
+            <button
+              onClick={() => {
+                router.push({
+                  pathname: "/demo",
+                });
+              }}
+              className="bg-black font-bold text-white text-lg py-4 px-7 rounded-xl disabled:bg-[#BABABA] disabled:cursor-not-allowed"
+            >
+              Prev
+            </button>
             <button
               disabled={disabled}
               onClick={() => {

@@ -184,14 +184,27 @@ export default function Demo() {
                 <span className="label-text">e.g. data scientist, dentist</span>
                 {/* <span className="label-text-alt">Bottom Right label</span> */}
               </label>
-              <button
-                type="submit"
-                className="btn btn-primary mt-4 mb-12 disabled:loading"
-                disabled={valid}
-              >
-                Go to demo
-              </button>
-              <button onClick={handleSelectExisting}>Select existing</button>
+
+              <div className="flex w-full">
+                <div className="grid h-20 flex-grow card rounded-box place-items-center">
+                  <button
+                    type="submit"
+                    className="btn btn-primary mt-4 mb-12 disabled:loading"
+                    disabled={valid}
+                  >
+                    Go to demo
+                  </button>
+                </div>
+                <div className="divider divider-horizontal">OR</div>
+                <div className="grid h-20 flex-grow card rounded-box place-items-center">
+                  <button
+                    className="btn btn-primary mt-4 mb-12 disabled:loading"
+                    onClick={handleSelectExisting}
+                  >
+                    Select existing
+                  </button>
+                </div>
+              </div>
             </div>
           </form>
         </div>
