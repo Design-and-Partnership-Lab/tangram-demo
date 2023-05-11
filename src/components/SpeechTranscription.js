@@ -34,10 +34,9 @@ export default function SpeechTranscription() {
 
   const { transcript } = useSpeechRecognition();
   const existing_transcript =
-    "A lot of the aspects of a job in research actually appeal to me and especially within both, education and Technology. I like to think through things and stops and break things down. I also like to think through and consider problems, that might need to be solved and the steps you might need to take to get there and I want to make sure that I work in a job that requires me to learn from and work with others in the future because I think there’s something new to be learned every day and I think there’s just something cool about what thinking of new ideas and working in an expanding field.	I don’t know if I would describe it as unappealing because in the same way, it’s a reason that this job or this feels as appealing to me, but maybe the fact that technology changes all the time and so there will always be new things to consider and new technologies that might disrupt the field or a specific thing that I might be working on. But I think at the same time technology always be used for good if we try and because I like both education and technology I would just want to take it as an opportunity to think and learn about how long what I’m working on might be made better through that.";
-
+    "Working in data science and analytics is appealing because I've always liked the formula, the input and output aspect of Statistics. There's always an answer and a way to get the answers or you have data to see what you answered. I think research was really interesting for me as a first time research assistant because you can code your own projects. And once you have your project, you have all this data that you can do whatever you want. I love cleaning data which is a tedious task, but I think that's appealing to change the repetitiveness and the small attention to detail that it requires. So it's very specific and very important.\n\n The one thing that is unappealing to me or sort of like a negative factor is the amount of time and money. It takes a couple of years to get your Master's to your PhD, to be able to publish your work. I feel like there's pressure from everyone in the social circle to continue to do more work in less time. I'm almost done with my undergraduate degree, and time is going by really fast. Besides being afraid of like committing all of my time and efforts into getting a degree, another unappealing thing is the solitary aspect like it's just you and your project. It's mostly you and a small team. So I feel like your struggle would just remain there, so it's very important to network outside of your circle but it's really hard.";
   const existing_response =
-    "Values:\n- Believes education is one of the most important aspects of society.\n- Finds it rewarding to actively help people.\n- Excited about the prospect of being able to combine interests in research and teaching.\n\nChallenges:\n- Anticipates that the first few years of the PhD program may be challenging as they adjust to the workload and find their bearings.\n- Acknowledges the competitive nature of the job market for becoming a professor.\n- Concerned about balancing the responsibilities of research, teaching, and other aspects of the job.\n\nQuestion:\n- What is something you wish you knew before pursuing a PhD and entering academia full-time?";
+    "Values:\n- Enjoys finding answers through data analysis.\n- Appreciates the importance of attention to detail in data cleaning.\n- Finds the ability to code projects and work independently appealing.\n\nChallenges:\n- Concerned about the time and financial commitment required to get a Master's or PhD and publish work.\n- Worried about the pressure to constantly do more work in less time.\n- Finds the solitary nature of the work unappealing and recognizes the importance of networking.\n\nQuestion:\n- How can I develop a strong professional network in the field of data science and analytics while still focusing on my studies?";
 
   const APIBODY = {
     model: "gpt-3.5-turbo",
@@ -45,7 +44,7 @@ export default function SpeechTranscription() {
       {
         role: "system",
         content:
-          "Please read the following excerpt from an interview with an undergraduate student who is interested in a particular career. In up to 3 bullet points, identify what this student perceives as important values for themselves and this career path. Then in up to 3 bullet points, summarize back to the student what they have identified as challenges on their path to that career. Finally, provide one question that a student might want to ask their mentor about in the future. After each header and bullet point, add \n. Between each section, make sure there are two \n, or \n\n.",
+          "Please read the following excerpt from an interview with an undergraduate student who is interested in a particular career. In up to 2 bullet points, identify what this student perceives as important values for themselves and this career path. Then in up to 2 bullet points, summarize back to the student what they have identified as challenges on their path to that career. Finally, provide one question that a student might want to ask their mentor about in the future. After each header and bullet point, add \n. Between each section, make sure there are two \n, or \n\n.",
       },
       {
         role: "user",
@@ -60,7 +59,7 @@ export default function SpeechTranscription() {
       {
         role: "user",
         content:
-          "I am interested in coming a " + CAREER_PATH + speechState ==
+          "I am interested in becoming a " + CAREER_PATH + speechState ==
           "transcript"
             ? existing_transcript
             : transcript,
@@ -134,9 +133,8 @@ export default function SpeechTranscription() {
             <br />
             <p className="text-center">
               <b>Answer the following in 1 - 2 minutes:</b> Imagine yourself as
-              a{" "}
-              {CAREER_PATH == "existing" ? "education researcher" : CAREER_PATH}
-              . What aspects of this life seem appealing to you? What aspects of
+              a {CAREER_PATH == "existing" ? "data scientist" : CAREER_PATH}.
+              What aspects of this life seem appealing to you? What aspects of
               this life seem unappealing to you?
             </p>
           </h2>
@@ -156,7 +154,10 @@ export default function SpeechTranscription() {
                 </p>
               </span>
             )}
-            {speechState == "transcript" && <p>{existing_transcript}</p>}
+            {speechState == "transcript" &&
+              existing_transcript.split("\n").map((line) => {
+                return <p>{line}</p>;
+              })}
           </div>
           <div className="flex mt-2 gap-5">
             <button
@@ -184,13 +185,13 @@ export default function SpeechTranscription() {
                   handleTranscript();
                 }
               }}
-              className="bg-black font-bold text-white text-lg py-4 px-5 rounded-xl disabled:bg-[#BABABA] disabled:cursor-not-allowed"
+              className="bg-primary font-bold text-white text-lg py-4 px-5 rounded-xl disabled:bg-[#BABABA] disabled:cursor-not-allowed"
             >
               Submit
             </button>
           </div>
         </div>
-        <div className="col-span-1 px-10 py-5 mt-8 border rounded-2xl border-[#F92949] h-[700px] overflow-y-auto">
+        <div className="col-span-1 px-10 py-5 mt-8 border rounded-2xl border-[#5056E2] h-[700px] overflow-y-auto">
           <span className="flex flex-col place-self-start">
             <h1 className="text-5xl text-black font-bold mt-3 text-center">
               Insights from AI:
@@ -204,41 +205,48 @@ export default function SpeechTranscription() {
             }
             {!isLoading && response && (
               <span className="text-lg">
-                <p className="mt-7 font-bold">
-                  According to your audio survey, ChatGPT thinks:
+                <p className="mt-7 font-bold text-2xl">
+                  In your audio response, the following values and challenges
+                  surfaced:
                 </p>
                 {response.slice(0, 2).map((section) => (
                   <>
                     {section.split("\n").map((line) => (
-                      <p>{line}</p>
+                      <p className="text-primary">{line}</p>
                     ))}
                     <br />
                   </>
                 ))}
-                <p className="font-bold">QUESTION:</p>
+                <div className="rounded-2xl bg-[#5056E2] text-white text-center p-6 my-2 mb-8">
+                  <p>
+                    <span className="font-bold">Reflect: </span> Do the values
+                    listed here resonate with you? What is missing or
+                    inaccurate? Expand on the AI-generated insights above.
+                  </p>
+                  {/* <p>
+                    <span className="font-bold">Action: </span> Ask your
+                    CP-LEADS mentor to share a challenge they face in their work
+                    and how they deal with it. Give this a try next time you're
+                    asking someone about a future career; most people are more
+                    than happy to share.
+                  </p> */}
+                </div>
+
+                <p className="font-bold text-2xl">
+                  Here is a question that you may consider asking your mentor:
+                </p>
                 {response.slice(2, 3).map((section) => (
                   <>
                     {section
                       .split("\n")
                       .slice(1)
                       .map((line) => (
-                        <p>{line}</p>
+                        <p className="text-primary">{line}</p>
                       ))}
                     <br />
                   </>
                 ))}
                 {console.log("RESP", response)}
-                <div className="rounded-2xl bg-[#a96771] text-white text-center p-6 mt-5 mb-3">
-                  <p>
-                    Note: This is an example of the practical measure “Envision
-                    Yourself in the Work”.
-                  </p>
-                  <p>
-                    This information might be helpful for a mentor to know in
-                    order to better guide mentees who have limited exposure to
-                    various aspects of a career.
-                  </p>
-                </div>
               </span>
             )}
           </span>

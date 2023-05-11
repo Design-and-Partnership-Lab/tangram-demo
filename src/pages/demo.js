@@ -68,145 +68,161 @@ export default function Demo() {
       <header className="flex justify-start w-full items-center">
         <NavBar />
       </header>
-      <div className="h-full w-full grid grid-cols-4 px-16 gap-16">
-        <div className="col-span-1 flex flex-col gap-2 justify-center items-center">
-          {/* <p className="flex justify-center">
+
+      <div className="h-full flex flex-col justify-center p-12 w-[80%] gap-4 text-2xl">
+        <h1 className="text-5xl text-left font-bold">Try the Demo</h1>
+        <p>
+          In this demo, you will pretend that you are a sophomore in college
+          trying to figure out your summer plans.
+        </p>
+        <p>
+          You will be asked to reflect on your{" "}
+          <span className="underline">Self-Positioning</span> (1 of the 5
+          practical measures).
+        </p>
+        <div className="divider"></div>
+
+        <div className="grid grid-cols-2 px-4 gap-8">
+          {/* <div className="grid grid-cols-3 px-8 gap-8 rounded-lg border-4 border-dotted"> */}
+          <div className="col-span-1 flex flex-col gap-2 justify-center items-center mr-16">
+            {/* <p className="flex justify-center">
             Click to learn more about each practical measure:
           </p> */}
-          <label
-            htmlFor="pm-modal"
-            onClick={() => setMeasure("Self-Positioning")}
-            className="btn btn-outline w-full h-16 bg-[#F92949] text-white shadow-xl"
-          >
-            Self-positioning
-          </label>
-          <label
-            htmlFor="pm-modal"
-            onClick={() => setMeasure("Competency")}
-            className="btn btn-outline w-full h-16 bg-[#FF7B00] text-white shadow-xl"
-          >
-            Competency
-          </label>
-          <label
-            htmlFor="pm-modal"
-            onClick={() => setMeasure("Social Capital")}
-            className="btn btn-outline w-full h-16 bg-[#91CC26] text-white shadow-xl"
-          >
-            Social Capital
-          </label>
-          <label
-            htmlFor="pm-modal"
-            onClick={() => setMeasure("Structural Opportunity")}
-            className="btn btn-outline w-full h-16 bg-[#F165E8] text-white shadow-xl"
-          >
-            Structural Opportunity
-          </label>
-          <label
-            htmlFor="pm-modal"
-            onClick={() => setMeasure("Navigation")}
-            className="btn btn-outline w-full h-16 bg-[#50BAE4] text-white shadow-xl"
-          >
-            Navigation
-          </label>
-        </div>
-        <input type="checkbox" id="pm-modal" className="modal-toggle" />
-        <div className="modal">
-          <div className="modal-box">
-            <h3 className="font-bold text-2xl">Measure: {measure}</h3>
-            <div className="py-4 text-xl text-slate-600">
-              <div
-                className={`badge bg-[${measureColors[measure]}] border-none text-white font-bold`}
-              >
-                About the Measure{" "}
-              </div>{" "}
-              {measure ? measureInfo[measure][0] : null}
-            </div>
-            <div className="py-4 text-xl text-slate-600">
-              <div
-                className={`badge bg-[${measureColors[measure]}] border-none text-white font-bold`}
-              >
-                Rationale{" "}
-              </div>{" "}
-              {measure ? measureInfo[measure][2] : null}
-            </div>
-            <div className="py-4 text-xl text-slate-600">
-              <div
-                className={`badge bg-[${measureColors[measure]}] border-none text-white font-bold`}
-              >
-                Example Question{" "}
-              </div>{" "}
-              {measure ? measureInfo[measure][1] : null}
-            </div>
-
-            <div className="modal-action">
-              <label htmlFor="pm-modal" className="btn">
-                Close
-              </label>
-            </div>
-          </div>
-        </div>
-
-        <div className="col-span-3 flex flex-col justify-center items-start m-12">
-          <div className="flex flex-col gap-4 w-[80%] text-2xl">
-            <h1 className="text-5xl font-bold">Demo</h1>
-            <p>
-              In this demo, you will pretend that you are a sophomore in college
-              trying to figure out your summer plans...{" "}
-            </p>
-            <p>
-              You will be asked to reflect on your{" "}
-              <span className="underline">Self-Positioning</span> (1 of 5 facets
-              of the Practical Measures).
-            </p>
-            <p>
+            <p className="text-2xl">
               <span className="font-bold">First,</span> click to learn more
-              about each practical measures on the left.
+              about each practical measures below:
             </p>
-            <p>
-              <span className="font-bold">Then,</span> begin the demo by
-              inputting your career of interest below.
-            </p>
+            <label
+              htmlFor="pm-modal"
+              onClick={() => setMeasure("Self-Positioning")}
+              className="btn btn-outline w-full h-16 bg-[#F92949] text-white shadow-xl"
+            >
+              Self-positioning
+            </label>
+            <label
+              htmlFor="pm-modal"
+              onClick={() => setMeasure("Competency")}
+              className="btn btn-outline w-full h-16 bg-[#FF7B00] text-white shadow-xl"
+            >
+              Competency
+            </label>
+            <label
+              htmlFor="pm-modal"
+              onClick={() => setMeasure("Social Capital")}
+              className="btn btn-outline w-full h-16 bg-[#91CC26] text-white shadow-xl"
+            >
+              Social Capital
+            </label>
+            <label
+              htmlFor="pm-modal"
+              onClick={() => setMeasure("Structural Opportunity")}
+              className="btn btn-outline w-full h-16 bg-[#F165E8] text-white shadow-xl"
+            >
+              Structural Opportunity
+            </label>
+            <label
+              htmlFor="pm-modal"
+              onClick={() => setMeasure("Navigation")}
+              className="btn btn-outline w-full h-16 bg-[#50BAE4] text-white shadow-xl"
+            >
+              Navigation
+            </label>
           </div>
-          <form onSubmit={handleSubmit} className="font-body">
-            <div className="form-control w-full max-w-xs">
-              <label className="label">
-                {/* <span className="label-text">e.g. data scientist, dentist</span> */}
-                {/* <span className="label-text-alt">Top Right label</span> */}
-              </label>
-              <input
-                type="text"
-                id="career"
-                placeholder="Type here"
-                required
-                className="input input-bordered w-full max-w-xs"
-              />
-              <label className="label">
-                <span className="label-text">e.g. data scientist, dentist</span>
-                {/* <span className="label-text-alt">Bottom Right label</span> */}
-              </label>
+          <input type="checkbox" id="pm-modal" className="modal-toggle" />
+          <div className="modal">
+            <div className="modal-box">
+              <h3 className="font-bold text-2xl">Measure: {measure}</h3>
+              <div className="py-4 text-xl text-slate-600">
+                <div
+                  className={`badge bg-[${measureColors[measure]}] border-none text-white font-bold`}
+                >
+                  About the Measure{" "}
+                </div>{" "}
+                {measure ? measureInfo[measure][0] : null}
+              </div>
+              <div className="py-4 text-xl text-slate-600">
+                <div
+                  className={`badge bg-[${measureColors[measure]}] border-none text-white font-bold`}
+                >
+                  Rationale{" "}
+                </div>{" "}
+                {measure ? measureInfo[measure][2] : null}
+              </div>
+              <div className="py-4 text-xl text-slate-600">
+                <div
+                  className={`badge bg-[${measureColors[measure]}] border-none text-white font-bold`}
+                >
+                  Example Question{" "}
+                </div>{" "}
+                {measure ? measureInfo[measure][1] : null}
+              </div>
 
-              <div className="flex w-full">
-                <div className="grid h-20 flex-grow card rounded-box place-items-center">
-                  <button
-                    type="submit"
-                    className="btn btn-primary mt-4 mb-12 disabled:loading"
-                    disabled={valid}
-                  >
-                    Go to demo
-                  </button>
-                </div>
-                <div className="divider divider-horizontal">OR</div>
-                <div className="grid h-20 flex-grow card rounded-box place-items-center">
-                  <button
-                    className="btn btn-primary mt-4 mb-12 disabled:loading"
-                    onClick={handleSelectExisting}
-                  >
-                    Select existing
-                  </button>
-                </div>
+              <div className="modal-action">
+                <label htmlFor="pm-modal" className="btn">
+                  Close
+                </label>
               </div>
             </div>
-          </form>
+          </div>
+
+          <div className="col-span-1 flex flex-col justify-start items-start mx-4">
+            <div className="flex flex-col gap-8 w-[100%] text-2xl">
+              <p>
+                <span className="font-bold">Then,</span> begin the demo by
+                selecting one of two options below.
+              </p>
+            </div>
+            <div className="grid grid-cols-2 my-8 gap-4">
+              <div className="col-span-1 flex flex-row">
+                <form onSubmit={handleSubmit} className="font-body">
+                  <div className="form-control w-full max-w-xs">
+                    <p>Input your career of interest below.</p>
+                    <label className="label">
+                      {/* <span className="label-text">e.g. data scientist, dentist</span> */}
+                      {/* <span className="label-text-alt">Top Right label</span> */}
+                    </label>
+                    <input
+                      type="text"
+                      id="career"
+                      placeholder="Type here"
+                      required
+                      className="input input-bordered w-full max-w-xs"
+                    />
+                    <label className="label">
+                      <span className="label-text">
+                        e.g. data scientist, dentist
+                      </span>
+                      {/* <span className="label-text-alt">Bottom Right label</span> */}
+                    </label>
+
+                    <div className="flex w-full justify-start">
+                      <button
+                        type="submit"
+                        className="btn btn-primary mt-4 mb-12 disabled:loading"
+                        disabled={valid}
+                      >
+                        Go to full demo
+                      </button>
+                    </div>
+                  </div>
+                </form>
+                <div className="divider divider-horizontal">OR</div>
+              </div>
+              <div className="col-span-1">
+                <p className="text-2xl">
+                  Select an existing audio sample from a UCI student who is
+                  interested in becoming a data scientist.
+                </p>
+                <button
+                  className="btn btn-primary mt-4 mb-12 disabled:loading"
+                  onClick={handleSelectExisting}
+                  disabled={valid}
+                >
+                  Go to example demo
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
