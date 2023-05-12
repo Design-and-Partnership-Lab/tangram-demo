@@ -138,9 +138,7 @@ export default function SpeechTranscription() {
               this life seem unappealing to you?
             </p>
           </h2>
-          <div className="bg-red-100" onClick={() => setTextToCopy(transcript)}>
-            {transcript}
-          </div>
+
           <div className="border rounded-lg border-gray-500 m-4 p-8 w-full list-none h-[378px] overflow-y-auto">
             {(speechState == "record" || speechState == "pause") && (
               <span className="flex flex-col justify-center items-center w-full h-full">
@@ -158,7 +156,16 @@ export default function SpeechTranscription() {
               existing_transcript.split("\n").map((line) => {
                 return <p>{line}</p>;
               })}
+            {transcript ? (
+              <div
+                className="bg-slate-100 p-4 rounded-md"
+                onClick={() => setTextToCopy(transcript)}
+              >
+                {transcript}
+              </div>
+            ) : null}
           </div>
+
           <div className="flex mt-2 gap-5">
             <button
               onClick={() => {

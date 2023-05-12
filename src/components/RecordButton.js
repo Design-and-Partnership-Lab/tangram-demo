@@ -81,17 +81,17 @@ export default function RecordButton({
         {speechState == "record" && (
           <button
             onClick={startListening}
-            className="rounded-full py-8 px-8 z-50"
+            className="rounded-full py-4 px-4 z-50"
           >
-            <Microphone size={112} strokeWidth={2} color={"#A3A3A3"} />
+            <Microphone size={80} strokeWidth={2} color={"#A3A3A3"} />
           </button>
         )}
         {speechState == "pause" && (
           <button
             onClick={stopListening}
-            className="rounded-full py-8 px-8 z-50"
+            className="rounded-full py-4 px-4 z-50"
           >
-            <PlayerPause size={112} strokeWidth={2} color={"#A3A3A3"} />
+            <PlayerPause size={80} strokeWidth={2} color={"#A3A3A3"} />
           </button>
         )}
         <motion.div
