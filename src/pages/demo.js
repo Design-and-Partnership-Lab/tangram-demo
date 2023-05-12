@@ -69,7 +69,7 @@ export default function Demo() {
         <NavBar />
       </header>
 
-      <div className="h-full flex flex-col justify-center p-12 w-[80%] gap-4 text-2xl">
+      <div className="h-full flex flex-col justify-center p-12 pt-0 w-[80%] gap-4 text-2xl">
         <h1 className="text-5xl text-left font-bold">Try the Demo</h1>
         <p>
           In this demo, you will pretend that you are a sophomore in college
