@@ -18,6 +18,7 @@ export default function SpeechTranscription() {
   const [disabledSel, setDisabledSel] = useState(false);
   const [fullTranscript, setFullTranscript] = useState("");
   const { transcript, resetTranscript } = useSpeechRecognition();
+  const [isFirst, setIsFirst] = useState(true);
 
   const handleTranscriptChange = (event) => {
     setFullTranscript(event.target.value);
@@ -28,6 +29,7 @@ export default function SpeechTranscription() {
       continuous: true,
       language: "en-US",
     });
+    setIsFirst(false);
     setSpeechState("pause");
   };
 
@@ -189,6 +191,7 @@ export default function SpeechTranscription() {
                 </div>
 
                 <textarea
+                  readOnly={isFirst || (!isFirst && speechState == "pause")}
                   value={fullTranscript}
                   onChange={handleTranscriptChange}
                   className="col-span-4 bg-slate-100 p-4 rounded-md overflow-y-auto h-[250px] mt-3 resize-none"
