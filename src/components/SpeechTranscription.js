@@ -78,17 +78,21 @@ export default function SpeechTranscription() {
 
   useEffect(() => {
     if (CAREER_PATH == "existing") {
+      let values_challenges = existing_response
+        .split("Question:\n")[0]
+        .split("Challenges:\n");
+      values_challenges = [
+        values_challenges[0],
+        "Challenges:\n" + values_challenges[1],
+      ];
+      let questions = [
+        "Question:\n" + existing_response.split("Question:\n").slice(-1),
+      ];
+
+      setResponse([...values_challenges, ...questions]);
       setSpeechState("transcript");
       setLoading(true);
       setDisabled(true);
-
-      let resp_sections = existing_response
-        .split("\nQuestion:\n")[0]
-        .split("\nChallenges\n");
-      let questions = existing_response.split("\nQuestion:\n")[1];
-      resp_sections.push(questions);
-      setResponse(resp_sections);
-
       setTimeout(() => {
         setLoading(false);
         setDisabled(false);
@@ -111,13 +115,16 @@ export default function SpeechTranscription() {
       .then((data) => {
         const resp = data.choices[0].message.content;
         try {
-          let resp_sections = resp
-            .split("\nQuestion:\n")[0]
-            .split("\nChallenges\n");
-          let questions = resp.split("\nQuestion:\n").slice(1, 2);
-          resp_sections.push(questions);
+          let values_challenges = resp
+            .split("Question:\n")[0]
+            .split("Challenges:\n");
+          values_challenges = [
+            values_challenges[0],
+            "Challenges:\n" + values_challenges[1],
+          ];
+          let questions = ["Question:\n" + resp.split("Question:\n").slice(-1)];
 
-          setResponse(resp_sections);
+          setResponse([...values_challenges, ...questions]);
           setLoading(false);
           setDisabled(false);
           setDisabledSel(false);
