@@ -194,7 +194,11 @@ export default function SpeechTranscription() {
                   readOnly={isFirst || (!isFirst && speechState == "pause")}
                   value={fullTranscript}
                   onChange={handleTranscriptChange}
-                  className="col-span-4 bg-slate-100 p-4 rounded-md overflow-y-auto h-[250px] mt-3 resize-none"
+                  className={`col-span-4 bg-slate-100 p-4 rounded-md overflow-y-auto h-[250px] mt-3 resize-none ${
+                    isFirst || (!isFirst && speechState == "pause")
+                      ? "outline-none border-none"
+                      : ""
+                  }`}
                 />
               </span>
             )}
