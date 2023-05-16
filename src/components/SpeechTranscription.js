@@ -7,7 +7,6 @@ import Smile from "./Smile";
 import Cisco from "./Cisco";
 import NavBar from "../components/NavBar";
 import RecordButton from "../components/RecordButton";
-import { Carrot } from "tabler-icons-react";
 
 export default function SpeechTranscription() {
   const [textToCopy, setTextToCopy] = useState();
@@ -18,6 +17,12 @@ export default function SpeechTranscription() {
   const [isLoading, setLoading] = useState(false);
   const [disabled, setDisabled] = useState(false);
   const [disabledSel, setDisabledSel] = useState(false);
+  const [fullTranscript, setFullTranscript] = useState("");
+  const { transcript, resetTranscript } = useSpeechRecognition();
+
+  const handleTranscriptChange = (event) => {
+    setFullTranscript(event.target.value);
+  };
 
   const startListening = () => {
     SpeechRecognition.startListening({
@@ -27,12 +32,13 @@ export default function SpeechTranscription() {
     setSpeechState("pause");
   };
 
-  const stopListening = () => {
-    SpeechRecognition.stopListening();
+  const stopListening = async () => {
+    await SpeechRecognition.stopListening();
+    await setFullTranscript((prev) => prev + " " + transcript);
+    resetTranscript();
     setSpeechState("record");
   };
 
-  const { transcript } = useSpeechRecognition();
   const existing_transcript =
     "Working in data science and analytics is appealing because I've always liked the formula, the input and output aspect of Statistics. There's always an answer and a way to get the answers or you have data to see what you answered. I think research was really interesting for me as a first time research assistant because you can code your own projects. And once you have your project, you have all this data that you can do whatever you want. I love cleaning data which is a tedious task, but I think that's appealing to change the repetitiveness and the small attention to detail that it requires. So it's very specific and very important.\n\n The one thing that is unappealing to me or sort of like a negative factor is the amount of time and money. It takes a couple of years to get your Master's to your PhD, to be able to publish your work. I feel like there's pressure from everyone in the social circle to continue to do more work in less time. I'm almost done with my undergraduate degree, and time is going by really fast. Besides being afraid of like committing all of my time and efforts into getting a degree, another unappealing thing is the solitary aspect like it's just you and your project. It's mostly you and a small team. So I feel like your struggle would just remain there, so it's very important to network outside of your circle but it's really hard.";
   const existing_response =
@@ -159,15 +165,14 @@ export default function SpeechTranscription() {
                   <b>Click to start and stop the recording.</b>
                 </div>
 
-                <div
+                {/* <div className="col-span-4 bg-slate-100 p-4 rounded-md overflow-y-auto h-[250px] mt-3"> */}
+                <textarea
+                  value={fullTranscript}
+                  onChange={handleTranscriptChange}
                   className="col-span-4 bg-slate-100 p-4 rounded-md overflow-y-auto h-[250px] mt-3"
-                  onClick={() => setTextToCopy(transcript)}
-                >
-                  {/* {
-                    "Working in data science and analytics is appealing because I've always liked the formula, the input and output aspect of Statistics. There's always an answer and a way to get the answers or you have data to see what you answered. I think research was really interesting for me as a first time research assistant because you can code your own projects. And once you have your project, you have all this data that you can do whatever you want. I love cleaning data which is a tedious task, but I think that's appealing to change the repetitiveness and the small attention to detail that it requires. So it's very specific and very important.\n\n The one thing that is unappealing to me or sort of like a negative factor is the amount of time and money. It takes a couple of years to get your Master's to your PhD, to be able to publish your work. I feel like there's pressure from everyone in the social circle to continue to do more work in less time. I'm almost done with my undergraduate degree, and time is going by really fast. Besides being afraid of like committing all of my time and efforts into getting a degree, another unappealing thing is the solitary aspect like it's just you and your project. It's mostly you and a small team. So I feel like your struggle would just remain there, so it's very important to network outside of your circle but it's really hard."
-                  } */}
-                  {transcript}
-                </div>
+                />
+                {/* {transcript} */}
+                {/* </div> */}
               </span>
             )}
             {speechState == "transcript" &&
