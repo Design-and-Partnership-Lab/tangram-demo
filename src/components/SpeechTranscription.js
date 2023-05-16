@@ -7,7 +7,6 @@ import Smile from "./Smile";
 import Cisco from "./Cisco";
 import NavBar from "../components/NavBar";
 import RecordButton from "../components/RecordButton";
-import { Carrot } from "tabler-icons-react";
 
 export default function SpeechTranscription() {
   const [textToCopy, setTextToCopy] = useState();
@@ -18,10 +17,11 @@ export default function SpeechTranscription() {
   const [isLoading, setLoading] = useState(false);
   const [disabled, setDisabled] = useState(false);
   const [disabledSel, setDisabledSel] = useState(false);
-  const { transcript, setTranscript } = useSpeechRecognition(); //set transcript is not a function
+  const [fullTranscript, setFullTranscript] = useState("");
+  const { transcript, resetTranscript } = useSpeechRecognition();
 
-  const handleChange = (event) => {
-    setTranscript(event.target.value);
+  const handleTranscriptChange = (event) => {
+    setFullTranscript(event.target.value);
   };
 
   const startListening = () => {
@@ -32,8 +32,10 @@ export default function SpeechTranscription() {
     setSpeechState("pause");
   };
 
-  const stopListening = () => {
-    SpeechRecognition.stopListening();
+  const stopListening = async () => {
+    await SpeechRecognition.stopListening();
+    await setFullTranscript((prev) => prev + " " + transcript);
+    resetTranscript();
     setSpeechState("record");
   };
 
@@ -165,8 +167,8 @@ export default function SpeechTranscription() {
 
                 {/* <div className="col-span-4 bg-slate-100 p-4 rounded-md overflow-y-auto h-[250px] mt-3"> */}
                 <textarea
-                  value={transcript}
-                  onChange={handleChange}
+                  value={fullTranscript}
+                  onChange={handleTranscriptChange}
                   className="col-span-4 bg-slate-100 p-4 rounded-md overflow-y-auto h-[250px] mt-3"
                 />
                 {/* {transcript} */}
