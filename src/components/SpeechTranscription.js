@@ -161,7 +161,12 @@ export default function SpeechTranscription() {
                   />
                 </div>
                 <div className="col-span-3 flex justify-center items-center h-[100px] text-xl font-normal">
-                  <b>Click to start and stop the recording.</b>
+                  {speechState == "record" && (
+                    <b>Click to start the recording.</b>
+                  )}
+                  {speechState == "pause" && (
+                    <b>Click to stop the recording.</b>
+                  )}
                 </div>
 
                 <textarea
