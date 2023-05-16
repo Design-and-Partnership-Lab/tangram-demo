@@ -41,7 +41,7 @@ export default function SpeechTranscription() {
   const existing_transcript =
     "Working in data science and analytics is appealing because I've always liked the formula, the input and output aspect of Statistics. There's always an answer and a way to get the answers or you have data to see what you answered. I think research was really interesting for me as a first time research assistant because you can code your own projects. And once you have your project, you have all this data that you can do whatever you want. I love cleaning data which is a tedious task, but I think that's appealing to change the repetitiveness and the small attention to detail that it requires. So it's very specific and very important.\n\n The one thing that is unappealing to me or sort of like a negative factor is the amount of time and money. It takes a couple of years to get your Master's to your PhD, to be able to publish your work. I feel like there's pressure from everyone in the social circle to continue to do more work in less time. I'm almost done with my undergraduate degree, and time is going by really fast. Besides being afraid of like committing all of my time and efforts into getting a degree, another unappealing thing is the solitary aspect like it's just you and your project. It's mostly you and a small team. So I feel like your struggle would just remain there, so it's very important to network outside of your circle but it's really hard.";
   const existing_response =
-    "Values:\n- Enjoys finding answers through data analysis.\n- Appreciates the importance of attention to detail in data cleaning.\n- Finds the ability to code projects and work independently appealing.\n\nChallenges:\n- Concerned about the time and financial commitment required to get a Master's or PhD and publish work.\n- Worried about the pressure to constantly do more work in less time.\n- Finds the solitary nature of the work unappealing and recognizes the importance of networking.\n\nQuestion:\n- How can I develop a strong professional network in the field of data science and analytics while still focusing on my studies?";
+    "Values:\n- Enjoys finding answers through data analysis.\n- Appreciates the importance of attention to detail in data cleaning.\n- Finds the ability to code projects and work independently appealing.\nChallenges:\n- Concerned about the time and financial commitment required to get a Master's or PhD and publish work.\n- Worried about the pressure to constantly do more work in less time.\n- Finds the solitary nature of the work unappealing and recognizes the importance of networking.\nQuestion:\n- How can I develop a strong professional network in the field of data science and analytics while still focusing on my studies?";
 
   const APIBODY = {
     model: "gpt-3.5-turbo",
@@ -49,7 +49,7 @@ export default function SpeechTranscription() {
       {
         role: "system",
         content:
-          "Please read the following excerpt from an interview with an undergraduate student who is interested in a particular career. In up to 2 bullet points, identify what this student perceives as important values for themselves and this career path. Then in up to 2 bullet points, summarize back to the student what they have identified as challenges on their path to that career. Finally, provide one question that a student might want to ask their mentor about in the future. After each header and bullet point, add \n. Between each section, make sure there are two \n, or \n\n.",
+          "Please read the following excerpt from an interview with an undergraduate student who is interested in a particular career. In up to 2 bullet points, identify what this student perceives as important values for themselves and this career path. Then in up to 2 bullet points, summarize back to the student what they have identified as challenges on their path to that career. Finally, provide one question that a student might want to ask their mentor about in the future. After each header and bullet point, add \n. Between each section, make sure there is a \n before each header.",
       },
       {
         role: "user",
@@ -59,7 +59,7 @@ export default function SpeechTranscription() {
       {
         role: "assistant",
         content:
-          "Values:\n- Believes education is one of the most important aspects of society.\n- Finds it rewarding to actively help people.\n- Excited about the prospect of being able to combine interests in research and teaching.\n\nChallenges:\n- Anticipates that the first few years of the PhD program may be challenging as they adjust to the workload and find their bearings.\n- Acknowledges the competitive nature of the job market for becoming a professor.\n- Concerned about balancing the responsibilities of research, teaching, and other aspects of the job.\n\nQuestion:\n- What is something you wish you knew before pursuing a PhD and entering academia full-time?",
+          "Values:\n- Believes education is one of the most important aspects of society.\n- Finds it rewarding to actively help people.\n- Excited about the prospect of being able to combine interests in research and teaching.\nChallenges:\n- Anticipates that the first few years of the PhD program may be challenging as they adjust to the workload and find their bearings.\n- Acknowledges the competitive nature of the job market for becoming a professor.\n- Concerned about balancing the responsibilities of research, teaching, and other aspects of the job.\nQuestion:\n- What is something you wish you knew before pursuing a PhD and entering academia full-time?",
       },
       {
         role: "user",
@@ -81,7 +81,14 @@ export default function SpeechTranscription() {
       setSpeechState("transcript");
       setLoading(true);
       setDisabled(true);
-      setResponse(existing_response.split("\n\n"));
+
+      let resp_sections = existing_response
+        .split("\nQuestion:\n")[0]
+        .split("\nChallenges\n");
+      let questions = existing_response.split("\nQuestion:\n")[1];
+      resp_sections.push(questions);
+      setResponse(resp_sections);
+
       setTimeout(() => {
         setLoading(false);
         setDisabled(false);
@@ -103,9 +110,14 @@ export default function SpeechTranscription() {
       })
       .then((data) => {
         const resp = data.choices[0].message.content;
-        console.log("logged resp: ", resp);
         try {
-          setResponse(resp.split("\n\n"));
+          let resp_sections = resp
+            .split("\nQuestion:\n")[0]
+            .split("\nChallenges\n");
+          let questions = resp.split("\nQuestion:\n").slice(1, 2);
+          resp_sections.push(questions);
+
+          setResponse(resp_sections);
           setLoading(false);
           setDisabled(false);
           setDisabledSel(false);
