@@ -3,7 +3,6 @@ import SpeechRecognition, {
 } from "react-speech-recognition";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import Smile from "./Smile";
 import Cisco from "./Cisco";
 import NavBar from "../components/NavBar";
 import RecordButton from "../components/RecordButton";
@@ -165,14 +164,11 @@ export default function SpeechTranscription() {
                   <b>Click to start and stop the recording.</b>
                 </div>
 
-                {/* <div className="col-span-4 bg-slate-100 p-4 rounded-md overflow-y-auto h-[250px] mt-3"> */}
                 <textarea
                   value={fullTranscript}
                   onChange={handleTranscriptChange}
-                  className="col-span-4 bg-slate-100 p-4 rounded-md overflow-y-auto h-[250px] mt-3"
+                  className="col-span-4 bg-slate-100 p-4 rounded-md overflow-y-auto h-[250px] mt-3 resize-none"
                 />
-                {/* {transcript} */}
-                {/* </div> */}
               </span>
             )}
             {speechState == "transcript" &&
