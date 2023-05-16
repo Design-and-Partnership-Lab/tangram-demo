@@ -67,7 +67,7 @@ export default function SpeechTranscription() {
           "I am interested in becoming a " + CAREER_PATH + speechState ==
           "transcript"
             ? existing_transcript
-            : transcript,
+            : fullTranscript,
       },
     ],
     max_tokens: 200,
