@@ -174,7 +174,10 @@ export default function SpeechTranscription() {
           >
             {(speechState == "record" || speechState == "pause") && (
               <span className="grid grid-rows-2 grid-cols-4 w-full h-[230px]">
-                <div className="col-span-1 flex justify-center items-center h-[100px]">
+                <div
+                  className="col-span-1 flex justify-center items-center h-[100px] tooltip"
+                  data-tip="You can edit transcript after speaking"
+                >
                   <RecordButton
                     speechState={speechState}
                     startListening={startListening}
