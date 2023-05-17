@@ -29,7 +29,7 @@ export default function SpeechTranscription() {
       continuous: true,
       language: "en-US",
     });
-    setIsFirst(false);
+
     setSpeechState("pause");
   };
 
@@ -37,6 +37,7 @@ export default function SpeechTranscription() {
     await SpeechRecognition.stopListening();
     await setFullTranscript((prev) => prev + " " + transcript);
     resetTranscript();
+    setIsFirst(false);
     setSpeechState("record");
   };
 
@@ -178,11 +179,34 @@ export default function SpeechTranscription() {
                   className="col-span-1 flex justify-center items-center h-[100px] tooltip"
                   data-tip="You can edit transcript after speaking"
                 >
-                  <RecordButton
-                    speechState={speechState}
-                    startListening={startListening}
-                    stopListening={stopListening}
-                  />
+                  <label htmlFor="my-modal">
+                    <RecordButton
+                      speechState={speechState}
+                      startListening={startListening}
+                      stopListening={stopListening}
+                    />
+                  </label>
+                  {isFirst && (
+                    <div>
+                      <input
+                        type="checkbox"
+                        id="my-modal"
+                        className="modal-toggle"
+                      />
+                      <div className="modal">
+                        <div className="modal-box">
+                          <h3 className="font-bold text-lg">
+                            You Can Edit the text after the speech input!!!
+                          </h3>
+                          <div className="modal-action">
+                            <label htmlFor="my-modal" className="btn">
+                              OK
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </div>
                 <div className="col-span-3 flex justify-center items-center h-[100px] text-xl font-normal">
                   {speechState == "record" && (
