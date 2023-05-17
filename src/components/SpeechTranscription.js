@@ -177,7 +177,7 @@ export default function SpeechTranscription() {
               <span className="grid grid-rows-2 grid-cols-4 w-full h-[230px]">
                 <div
                   className="col-span-1 flex justify-center items-center h-[100px] tooltip"
-                  data-tip="You can edit transcript after speaking"
+                  data-tip="You will be able to edit the transcript after recording"
                 >
                   <label htmlFor="my-modal">
                     <RecordButton
@@ -186,7 +186,7 @@ export default function SpeechTranscription() {
                       stopListening={stopListening}
                     />
                   </label>
-                  {isFirst && (
+                  {/* {isFirst && (
                     <div>
                       <input
                         type="checkbox"
@@ -206,7 +206,7 @@ export default function SpeechTranscription() {
                         </div>
                       </div>
                     </div>
-                  )}
+                  )} */}
                 </div>
                 <div className="col-span-3 flex justify-center items-center h-[100px] text-xl font-normal">
                   {speechState == "record" && (
