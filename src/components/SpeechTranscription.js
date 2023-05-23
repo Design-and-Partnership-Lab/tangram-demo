@@ -121,13 +121,21 @@ export default function SpeechTranscription() {
           let values_challenges = resp
             .split("Question:\n")[0]
             .split("Challenges:\n");
-          values_challenges = [
-            values_challenges[0],
-            "Challenges:\n" + values_challenges[1],
-          ];
-          let questions = ["Question:\n" + resp.split("Question:\n").slice(-1)];
-
-          setResponse([...values_challenges, ...questions]);
+          console.log("values_challenges", values_challenges);
+          console.log(values_challenges.length);
+          console.log(resp);
+          if (values_challenges.length == 1) {
+            setResponse([resp]);
+          } else {
+            values_challenges = [
+              values_challenges[0],
+              "Challenges:\n" + values_challenges[1],
+            ];
+            let questions = [
+              "Question:\n" + resp.split("Question:\n").slice(-1),
+            ];
+            setResponse([...values_challenges, ...questions]);
+          }
           setLoading(false);
           setDisabled(false);
           setDisabledSel(false);
@@ -287,7 +295,12 @@ export default function SpeechTranscription() {
                 <Cisco />
               ) //different kind of loading screen
             }
-            {!isLoading && response && (
+            {!isLoading && response && response.length == 1 && (
+              <span className="text-lg">
+                <p className="mt-7 text-primary">{response[0]}</p>
+              </span>
+            )}
+            {!isLoading && response && response.length == 3 && (
               <span className="text-lg">
                 <p className="mt-7 font-bold text-2xl">
                   In your audio response, the following values and challenges
