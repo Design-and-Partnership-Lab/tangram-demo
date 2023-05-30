@@ -80,7 +80,7 @@ export default function RecordButton({
 
   return (
     <>
-      <motion.div drag style={styles.container}>
+      <motion.div style={styles.container}>
         {speechState == "record" && (
           <button
             onClick={() => {
